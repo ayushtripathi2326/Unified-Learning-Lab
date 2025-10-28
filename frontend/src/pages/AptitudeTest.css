@@ -1,0 +1,80 @@
+.aptitude-test {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.aptitude-test h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.progress {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.question-card {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.question-card h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #ecf0f1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.option:hover {
+  border-color: #3498db;
+  background: #f8f9fa;
+}
+
+.option input {
+  margin-right: 10px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.score {
+  margin: 30px 0;
+  font-size: 24px;
+  color: #2c3e50;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #7f8c8d;
+}

@@ -1,0 +1,27 @@
+backend/
+├── models/              # Database models (correct location)
+│   ├── User.js         ✅
+│   ├── Question.js     ✅
+│   └── Result.js       ✅
+├── src/
+│   ├── server.js       ✅ Entry point
+│   ├── app.js          ✅ Express configuration
+│   ├── config/
+│   │   ├── database.js ✅ MongoDB connection
+│   │   └── env.js      ✅ Environment variables
+│   ├── controllers/
+│   │   ├── authController.js       ✅
+│   │   ├── questionController.js   ✅
+│   │   └── resultController.js     ✅
+│   ├── middleware/
+│   │   ├── auth.js     ✅ FIXED
+│   │   ├── errorHandler.js ✅
+│   │   └── validator.js ✅
+│   ├── routes/
+│   │   ├── auth.js     ✅
+│   │   ├── questions.js ✅
+│   │   └── results.js  ✅
+│   └── utils/
+│       ├── asyncHandler.js ✅
+│       └── logger.js   ✅
+└── package.json        ✅ Updated with helmet & morgan

@@ -1,0 +1,173 @@
+.binary-tree-page {
+  max-width: 100%;
+  margin: 0;
+  padding: 40px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.binary-tree-page h2 {
+  color: #00695c;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.page-subtitle {
+  color: #00838f;
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.controls input {
+  width: 250px;
+  padding: 14px 20px;
+  border: 2px solid #00897b;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.controls input:focus {
+  outline: none;
+  border-color: #00695c;
+  box-shadow: 0 0 0 4px rgba(0, 137, 123, 0.1);
+  transform: translateY(-2px);
+}
+
+.controls button {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: linear-gradient(135deg, #00897b 0%, #00695c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.controls button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.controls button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.controls button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+}
+
+.controls button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.tree-canvas-container {
+  animation: fadeInScale 0.6s ease-out 0.4s both;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tree-canvas {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border: 3px solid rgba(0, 137, 123, 0.2);
+  transition: all 0.3s ease;
+}
+
+.tree-canvas:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 137, 123, 0.4);
+}
+
+@media (max-width: 768px) {
+  .binary-tree-page {
+    padding: 20px;
+  }
+
+  .binary-tree-page h2 {
+    font-size: 32px;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls input,
+  .controls button {
+    width: 100%;
+  }
+}
