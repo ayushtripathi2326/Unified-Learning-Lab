@@ -1,0 +1,37 @@
+[
+  {
+    "text": "If all roses are flowers and some flowers are red, then:",
+    "category": "Logical",
+    "difficulty": "medium",
+    "options": ["All roses are red", "Some roses are red", "No roses are red", "Cannot be determined"],
+    "correct": 3
+  },
+  {
+    "text": "Complete the series: 2, 6, 12, 20, 30, ?",
+    "category": "Logical",
+    "difficulty": "medium",
+    "options": ["40", "42", "44", "46"],
+    "correct": 1
+  },
+  {
+    "text": "If CAT = 3120, what is DOG = ?",
+    "category": "Logical",
+    "difficulty": "hard",
+    "options": ["4157", "4158", "4159", "4160"],
+    "correct": 0
+  },
+  {
+    "text": "Which number comes next? 1, 4, 9, 16, 25, ?",
+    "category": "Logical",
+    "difficulty": "easy",
+    "options": ["30", "32", "36", "40"],
+    "correct": 2
+  },
+  {
+    "text": "If APPLE is coded as BQQMF, how is MANGO coded?",
+    "category": "Logical",
+    "difficulty": "medium",
+    "options": ["NBOHP", "NBOHO", "NBPHO", "NBOIP"],
+    "correct": 0
+  }
+]

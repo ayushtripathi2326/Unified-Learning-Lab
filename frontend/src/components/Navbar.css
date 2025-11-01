@@ -47,6 +47,25 @@
     transform: scale(1.05);
 }
 
+.navbar-user-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+}
+
+.navbar-user-icon {
+    font-size: 1.2rem;
+}
+
+.navbar-user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
 .navbar-brand {
     color: white;
     font-size: 1.5rem;
@@ -337,6 +356,15 @@
 
     .navbar-left {
         flex: 1;
+        gap: 0.5rem;
+    }
+
+    .navbar-user-display {
+        padding: 0.4rem 0.8rem;
+    }
+
+    .navbar-user-name {
+        font-size: 0.85rem;
     }
 
     .navbar-toggle {
@@ -401,6 +429,18 @@
 @media (max-width: 480px) {
     .navbar-brand {
         font-size: 1.1rem;
+    }
+
+    .navbar-user-display {
+        padding: 0.3rem 0.6rem;
+    }
+
+    .navbar-user-icon {
+        font-size: 1rem;
+    }
+
+    .navbar-user-name {
+        display: none;
     }
 
     .sidebar-toggle {

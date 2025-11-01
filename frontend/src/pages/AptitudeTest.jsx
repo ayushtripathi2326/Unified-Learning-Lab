@@ -13,7 +13,7 @@ function AptitudeTest({ user }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/questions/${category}`)
+    axios.get(`http://localhost:5001/api/questions/${category}`)
       .then(res => {
         setQuestions(res.data);
         setLoading(false);
@@ -29,7 +29,7 @@ function AptitudeTest({ user }) {
   };
 
   const handleSubmit = () => {
-    axios.post('http://localhost:5000/api/questions/submit', { category, answers })
+    axios.post('http://localhost:5001/api/questions/submit', { category, answers })
       .then(res => setResult(res.data))
       .catch(err => console.error(err));
   };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './HashTable.css';
 
 function HashTable() {
@@ -8,6 +8,119 @@ function HashTable() {
   const [value, setValue] = useState('');
   const [searchKey, setSearchKey] = useState('');
   const [highlightIndex, setHighlightIndex] = useState(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    drawHashTable();
+  }, [hashTable, highlightIndex]);
+
+  const drawHashTable = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const cellWidth = 80;
+    const cellHeight = 50;
+    const bucketSpacing = 120;
+    const startX = 50;
+    const startY = 50;
+
+    // Draw title
+    ctx.fillStyle = '#1976d2';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Hash Table Buckets', canvas.width / 2, 30);
+
+    hashTable.forEach((bucket, index) => {
+      const x = startX;
+      const y = startY + index * 60;
+
+      // Highlight effect
+      const isHighlighted = highlightIndex === index;
+
+      // Draw index box
+      ctx.fillStyle = isHighlighted ? '#ff9800' : '#2196f3';
+      ctx.fillRect(x, y, cellWidth, cellHeight);
+      ctx.strokeStyle = isHighlighted ? '#f57c00' : '#1565c0';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x, y, cellWidth, cellHeight);
+
+      // Draw index number
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 16px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`[${index}]`, x + cellWidth / 2, y + cellHeight / 2);
+
+      // Draw bucket items
+      if (bucket.length > 0) {
+        bucket.forEach((item, itemIdx) => {
+          const itemX = x + cellWidth + 80 + itemIdx * bucketSpacing;
+          const itemY = y;
+
+          // Draw arrow from index to first item
+          if (itemIdx === 0) {
+            ctx.beginPath();
+            ctx.moveTo(x + cellWidth, y + cellHeight / 2);
+            ctx.lineTo(itemX - 10, y + cellHeight / 2);
+            ctx.strokeStyle = isHighlighted ? '#ff9800' : '#4caf50';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(itemX - 10, y + cellHeight / 2);
+            ctx.lineTo(itemX - 18, y + cellHeight / 2 - 6);
+            ctx.lineTo(itemX - 18, y + cellHeight / 2 + 6);
+            ctx.closePath();
+            ctx.fillStyle = isHighlighted ? '#ff9800' : '#4caf50';
+            ctx.fill();
+          }
+
+          // Draw item box
+          ctx.fillStyle = isHighlighted ? '#fff3e0' : '#e8f5e9';
+          ctx.fillRect(itemX, itemY, 100, cellHeight);
+          ctx.strokeStyle = isHighlighted ? '#ff9800' : '#4caf50';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(itemX, itemY, 100, cellHeight);
+
+          // Draw key-value pair
+          ctx.fillStyle = '#424242';
+          ctx.font = '12px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText(`${item.key}:`, itemX + 5, itemY + 20);
+          ctx.fillText(`${item.value}`, itemX + 5, itemY + 38);
+
+          // Draw chain arrow to next item
+          if (itemIdx < bucket.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(itemX + 100, itemY + cellHeight / 2);
+            ctx.lineTo(itemX + 100 + 30, itemY + cellHeight / 2);
+            ctx.strokeStyle = '#9e9e9e';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(itemX + 130, itemY + cellHeight / 2);
+            ctx.lineTo(itemX + 122, itemY + cellHeight / 2 - 5);
+            ctx.lineTo(itemX + 122, itemY + cellHeight / 2 + 5);
+            ctx.closePath();
+            ctx.fillStyle = '#9e9e9e';
+            ctx.fill();
+          }
+        });
+      } else {
+        // Draw NULL
+        ctx.fillStyle = '#9e9e9e';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('NULL', x + cellWidth + 20, y + cellHeight / 2);
+      }
+    });
+  };
 
   // Simple hash function
   const hashFunction = (key) => {
@@ -151,6 +264,23 @@ function HashTable() {
               <span className="info-value">{getCollisions()}</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="canvas-visualization">
+        <h3>🎨 Canvas Visualization</h3>
+        <div className="canvas-container">
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={650}
+            style={{
+              border: '2px solid #1976d2',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #f5f7fa 0%, #e3f2fd 100%)',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+            }}
+          />
         </div>
       </div>
 

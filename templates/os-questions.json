@@ -1,0 +1,37 @@
+[
+  {
+    "text": "What is an operating system?",
+    "category": "OS",
+    "difficulty": "easy",
+    "options": ["Hardware", "Software that manages hardware", "Application software", "Programming language"],
+    "correct": 1
+  },
+  {
+    "text": "Which scheduling algorithm is non-preemptive?",
+    "category": "OS",
+    "difficulty": "medium",
+    "options": ["Round Robin", "First Come First Serve", "Shortest Remaining Time First", "Priority with preemption"],
+    "correct": 1
+  },
+  {
+    "text": "What is thrashing in an operating system?",
+    "category": "OS",
+    "difficulty": "hard",
+    "options": ["High CPU utilization", "Low page fault rate", "Excessive paging activity", "Fast process execution"],
+    "correct": 2
+  },
+  {
+    "text": "Which of the following is a process synchronization mechanism?",
+    "category": "OS",
+    "difficulty": "medium",
+    "options": ["Compiler", "Semaphore", "Assembler", "Loader"],
+    "correct": 1
+  },
+  {
+    "text": "What is the purpose of virtual memory?",
+    "category": "OS",
+    "difficulty": "easy",
+    "options": ["Increase RAM speed", "Allow programs to use more memory than physically available", "Reduce CPU usage", "Improve disk speed"],
+    "correct": 1
+  }
+]

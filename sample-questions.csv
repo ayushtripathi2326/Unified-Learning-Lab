@@ -1,0 +1,11 @@
+text,category,difficulty,option1,option2,option3,option4,correct
+"What is 2 + 2?",Aptitude,easy,2,3,4,5,2
+"What is the capital of France?",GK,medium,London,Berlin,Paris,Madrid,2
+"Which planet is known as the Red Planet?",GK,easy,Venus,Mars,Jupiter,Saturn,1
+"What is the time complexity of binary search?",Coding,medium,"O(n)","O(log n)","O(n^2)","O(1)",1
+"Which data structure uses LIFO?",Coding,easy,Queue,Stack,Tree,Graph,1
+"What does SQL stand for?",DBMS,easy,Structured Query Language,Simple Query Language,Standard Query Language,Sequential Query Language,0
+"Which scheduling algorithm is preemptive?",OS,medium,FCFS,SJF,Round Robin,Priority (non-preemptive),2
+"What is the default port for HTTP?",Networks,easy,21,22,80,443,2
+"If 5x + 3 = 18, what is x?",Quantitative,easy,2,3,4,5,1
+"Choose the correct synonym for 'Happy':",Verbal,easy,Sad,Joyful,Angry,Tired,1

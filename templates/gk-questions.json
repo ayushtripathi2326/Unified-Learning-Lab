@@ -1,0 +1,37 @@
+[
+  {
+    "text": "Who is known as the Father of Computer?",
+    "category": "GK",
+    "difficulty": "easy",
+    "options": ["Alan Turing", "Charles Babbage", "Bill Gates", "Steve Jobs"],
+    "correct": 1
+  },
+  {
+    "text": "What is the capital of India?",
+    "category": "GK",
+    "difficulty": "easy",
+    "options": ["Mumbai", "Delhi", "Kolkata", "Chennai"],
+    "correct": 1
+  },
+  {
+    "text": "Which is the largest planet in our solar system?",
+    "category": "GK",
+    "difficulty": "easy",
+    "options": ["Earth", "Mars", "Jupiter", "Saturn"],
+    "correct": 2
+  },
+  {
+    "text": "Who wrote 'Romeo and Juliet'?",
+    "category": "GK",
+    "difficulty": "medium",
+    "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+    "correct": 1
+  },
+  {
+    "text": "What is the chemical symbol for Gold?",
+    "category": "GK",
+    "difficulty": "medium",
+    "options": ["Go", "Gd", "Au", "Ag"],
+    "correct": 2
+  }
+]

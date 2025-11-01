@@ -523,6 +523,58 @@
 }
 
 /* Responsive Design */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Canvas Visualization Styles */
+.canvas-visualization {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(253, 203, 110, 0.3);
+  animation: fadeInScale 0.8s ease-in-out 0.4s both;
+}
+
+.canvas-visualization h3 {
+  font-size: 1.5rem;
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.canvas-container canvas {
+  max-width: 100%;
+  height: auto;
+  cursor: default;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 1024px) {
   .controls-container {
     grid-template-columns: 1fr;

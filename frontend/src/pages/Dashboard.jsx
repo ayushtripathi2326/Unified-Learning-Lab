@@ -9,7 +9,7 @@ function Dashboard({ user }) {
 
   useEffect(() => {
     if (user) {
-      axios.get(`http://localhost:5000/api/results/user/${user.id}`)
+      axios.get(`http://localhost:5001/api/results/user/${user.id}`)
         .then(res => {
           setResults(res.data);
           setLoading(false);

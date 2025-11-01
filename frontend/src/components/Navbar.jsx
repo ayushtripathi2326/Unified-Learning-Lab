@@ -123,10 +123,6 @@ function Navbar({ user, onLogout, toggleSidebar }) {
                     <span className="dropdown-icon">📊</span>
                     Dashboard
                   </button>
-                  <button onClick={() => { setIsUserDropdownOpen(false); navigate('/chatbot'); }} className="dropdown-item">
-                    <span className="dropdown-icon">🤖</span>
-                    AI Assistant
-                  </button>
                   <div className="dropdown-divider"></div>
                   <button onClick={handleLogout} className="dropdown-item logout-item">
                     <span className="dropdown-icon">🚪</span>

@@ -1,0 +1,37 @@
+[
+  {
+    "text": "If a train travels 120 km in 2 hours, what is its speed?",
+    "category": "Aptitude",
+    "difficulty": "easy",
+    "options": ["50 km/h", "60 km/h", "70 km/h", "80 km/h"],
+    "correct": 1
+  },
+  {
+    "text": "A shopkeeper sells an item for Rs. 450 after giving 10% discount. What was the marked price?",
+    "category": "Aptitude",
+    "difficulty": "medium",
+    "options": ["Rs. 400", "Rs. 450", "Rs. 500", "Rs. 550"],
+    "correct": 2
+  },
+  {
+    "text": "If 20% of a number is 80, what is the number?",
+    "category": "Aptitude",
+    "difficulty": "easy",
+    "options": ["200", "300", "400", "500"],
+    "correct": 2
+  },
+  {
+    "text": "A can complete a work in 10 days. B can complete it in 15 days. Together, in how many days?",
+    "category": "Aptitude",
+    "difficulty": "medium",
+    "options": ["5 days", "6 days", "7 days", "8 days"],
+    "correct": 1
+  },
+  {
+    "text": "The average of 5 numbers is 20. If one number is excluded, average becomes 18. What is the excluded number?",
+    "category": "Aptitude",
+    "difficulty": "hard",
+    "options": ["24", "26", "28", "30"],
+    "correct": 2
+  }
+]

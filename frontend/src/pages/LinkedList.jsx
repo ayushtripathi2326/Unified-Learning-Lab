@@ -1,10 +1,121 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './LinkedList.css';
 
 function LinkedList() {
   const [list, setList] = useState([]);
   const [input, setInput] = useState('');
   const [position, setPosition] = useState('');
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    drawLinkedList();
+  }, [list]);
+
+  const drawLinkedList = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (list.length === 0) {
+      // Draw empty state
+      ctx.fillStyle = '#9e9e9e';
+      ctx.font = '20px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Empty Linked List - Add nodes to visualize', canvas.width / 2, canvas.height / 2);
+      return;
+    }
+
+    const nodeWidth = 100;
+    const nodeHeight = 60;
+    const spacing = 80;
+    const startX = 50;
+    const startY = canvas.height / 2 - nodeHeight / 2;
+
+    // Draw HEAD label
+    ctx.fillStyle = '#1976d2';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('HEAD', startX - 20, startY - 30);
+
+    list.forEach((item, idx) => {
+      const x = startX + idx * (nodeWidth + spacing);
+      const y = startY;
+
+      // Draw node box
+      ctx.fillStyle = '#2196f3';
+      ctx.fillRect(x, y, nodeWidth, nodeHeight);
+
+      // Draw border
+      ctx.strokeStyle = '#1565c0';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x, y, nodeWidth, nodeHeight);
+
+      // Draw divider line
+      ctx.beginPath();
+      ctx.moveTo(x + nodeWidth * 0.65, y);
+      ctx.lineTo(x + nodeWidth * 0.65, y + nodeHeight);
+      ctx.strokeStyle = '#1565c0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw data value
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 18px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.toString().substring(0, 5), x + nodeWidth * 0.32, y + nodeHeight / 2);
+
+      // Draw "next" pointer text
+      ctx.font = '12px Arial';
+      ctx.fillText('→', x + nodeWidth * 0.82, y + nodeHeight / 2);
+
+      // Draw index below node
+      ctx.fillStyle = '#424242';
+      ctx.font = '12px Arial';
+      ctx.fillText(`[${idx}]`, x + nodeWidth / 2, y + nodeHeight + 20);
+
+      // Draw arrow to next node
+      if (idx < list.length - 1) {
+        const arrowStartX = x + nodeWidth;
+        const arrowEndX = x + nodeWidth + spacing;
+        const arrowY = y + nodeHeight / 2;
+
+        // Arrow line
+        ctx.beginPath();
+        ctx.moveTo(arrowStartX, arrowY);
+        ctx.lineTo(arrowEndX, arrowY);
+        ctx.strokeStyle = '#ff9800';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Arrow head
+        ctx.beginPath();
+        ctx.moveTo(arrowEndX, arrowY);
+        ctx.lineTo(arrowEndX - 10, arrowY - 8);
+        ctx.lineTo(arrowEndX - 10, arrowY + 8);
+        ctx.closePath();
+        ctx.fillStyle = '#ff9800';
+        ctx.fill();
+      }
+    });
+
+    // Draw NULL at the end
+    const lastX = startX + list.length * (nodeWidth + spacing);
+    ctx.fillStyle = '#f44336';
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('NULL', lastX + 30, startY + nodeHeight / 2);
+
+    // Draw TAIL label
+    if (list.length > 0) {
+      const tailX = startX + (list.length - 1) * (nodeWidth + spacing);
+      ctx.fillStyle = '#1976d2';
+      ctx.font = 'bold 16px Arial';
+      ctx.fillText('TAIL', tailX + nodeWidth / 2, startY + nodeHeight + 45);
+    }
+  };
 
   const insertAtHead = () => {
     if (input.trim()) {
@@ -109,6 +220,23 @@ function LinkedList() {
               <span className="info-value">{list.length > 0 ? list[list.length - 1] : 'NULL'}</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="canvas-visualization">
+        <h3>🎨 Canvas Visualization</h3>
+        <div className="canvas-container">
+          <canvas
+            ref={canvasRef}
+            width={1200}
+            height={250}
+            style={{
+              border: '2px solid #1976d2',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #f5f7fa 0%, #e3f2fd 100%)',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+            }}
+          />
         </div>
       </div>
 

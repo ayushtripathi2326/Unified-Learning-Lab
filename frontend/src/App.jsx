@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import BinaryTree from './pages/BinaryTree';
+import BST from './pages/BST';
 import BinarySearch from './pages/BinarySearch';
 import StackQueue from './pages/StackQueue';
 import Stack from './pages/Stack';
@@ -11,14 +12,21 @@ import Queue from './pages/Queue';
 import LinkedList from './pages/LinkedList';
 import HashTable from './pages/HashTable';
 import Heap from './pages/Heap';
+import Trie from './pages/Trie';
+import SegmentTree from './pages/SegmentTree';
+import Graph from './pages/Graph';
 import SortingVisualizer from './pages/SortingVisualizer';
 import SearchingVisualizer from './pages/SearchingVisualizer';
+import DynamicProgramming from './pages/DynamicProgramming';
+import GreedyAlgorithms from './pages/GreedyAlgorithms';
+import BoyerMoore from './pages/BoyerMoore';
 import AptitudeTest from './pages/AptitudeTest';
 import CNNVisualizer from './pages/CNNVisualizer';
 import TypingSpeed from './pages/TypingSpeed';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Chatbot from './pages/Chatbot';
+import Admin from './pages/Admin';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import './App.css';
@@ -43,14 +51,16 @@ function App() {
         <Navbar user={user} onLogout={handleLogout} toggleSidebar={toggleSidebar} />
         <div className="main-container">
           {user && (
-            <Sidebar className={sidebarOpen ? '' : 'collapsed'} />
+            <Sidebar user={user} className={sidebarOpen ? '' : 'collapsed'} />
           )}
           <div className={`content ${!user || !sidebarOpen ? 'full-width' : ''}`}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login setUser={setUser} />} />
               <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Navigate to="/login" />} />
+              <Route path="/admin" element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/login" />} />
               <Route path="/binary-tree" element={<BinaryTree />} />
+              <Route path="/bst" element={<BST />} />
               <Route path="/binary-search" element={<BinarySearch />} />
               <Route path="/stack-queue" element={<StackQueue />} />
               <Route path="/stack" element={<Stack />} />
@@ -58,8 +68,14 @@ function App() {
               <Route path="/linked-list" element={<LinkedList />} />
               <Route path="/hash-table" element={<HashTable />} />
               <Route path="/heap" element={<Heap />} />
+              <Route path="/trie" element={<Trie />} />
+              <Route path="/segment-tree" element={<SegmentTree />} />
+              <Route path="/graph" element={<Graph />} />
               <Route path="/sorting" element={<SortingVisualizer />} />
               <Route path="/searching" element={<SearchingVisualizer />} />
+              <Route path="/dynamic-programming" element={<DynamicProgramming />} />
+              <Route path="/greedy-algorithms" element={<GreedyAlgorithms />} />
+              <Route path="/boyer-moore" element={<BoyerMoore />} />
               <Route path="/aptitude/:category" element={<AptitudeTest user={user} />} />
               <Route path="/cnn" element={<CNNVisualizer />} />
               <Route path="/typing-speed" element={<TypingSpeed />} />

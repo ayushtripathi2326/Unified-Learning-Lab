@@ -1,0 +1,37 @@
+[
+  {
+    "text": "What is 15% of 200?",
+    "category": "Quantitative",
+    "difficulty": "easy",
+    "options": ["20", "25", "30", "35"],
+    "correct": 2
+  },
+  {
+    "text": "If x² = 144, what is x?",
+    "category": "Quantitative",
+    "difficulty": "easy",
+    "options": ["10", "11", "12", "13"],
+    "correct": 2
+  },
+  {
+    "text": "What is the value of 3⁴?",
+    "category": "Quantitative",
+    "difficulty": "easy",
+    "options": ["27", "64", "81", "243"],
+    "correct": 2
+  },
+  {
+    "text": "If a:b = 2:3 and b:c = 4:5, then a:c = ?",
+    "category": "Quantitative",
+    "difficulty": "medium",
+    "options": ["8:15", "6:10", "2:5", "4:9"],
+    "correct": 0
+  },
+  {
+    "text": "The sum of three consecutive odd numbers is 63. What is the largest number?",
+    "category": "Quantitative",
+    "difficulty": "medium",
+    "options": ["19", "21", "23", "25"],
+    "correct": 2
+  }
+]

@@ -2,12 +2,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-function Sidebar() {
+function Sidebar({ user }) {
   const location = useLocation();
 
   const isActive = (path) => {
     return location.pathname === path ? 'active' : '';
   };
+
+  const isAdmin = user && user.role === 'admin';
 
   return (
     <aside className="sidebar">
@@ -25,6 +27,14 @@ function Sidebar() {
                 <span>Dashboard</span>
               </Link>
             </li>
+            {isAdmin && (
+              <li className="sidebar-menu-item">
+                <Link to="/admin" className={`sidebar-link ${isActive('/admin')}`}>
+                  <span className="sidebar-icon">🔧</span>
+                  <span>Admin Panel</span>
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -35,6 +45,12 @@ function Sidebar() {
               <Link to="/binary-tree" className={`sidebar-link ${isActive('/binary-tree')}`}>
                 <span className="sidebar-icon">🌳</span>
                 <span>Binary Tree</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/bst" className={`sidebar-link ${isActive('/bst')}`}>
+                <span className="sidebar-icon">🌲</span>
+                <span>BST</span>
               </Link>
             </li>
             <li className="sidebar-menu-item">
@@ -67,6 +83,24 @@ function Sidebar() {
                 <span>Heap</span>
               </Link>
             </li>
+            <li className="sidebar-menu-item">
+              <Link to="/trie" className={`sidebar-link ${isActive('/trie')}`}>
+                <span className="sidebar-icon">🔤</span>
+                <span>Trie</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/segment-tree" className={`sidebar-link ${isActive('/segment-tree')}`}>
+                <span className="sidebar-icon">🌳</span>
+                <span>Segment Tree</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/graph" className={`sidebar-link ${isActive('/graph')}`}>
+                <span className="sidebar-icon">🌐</span>
+                <span>Graph</span>
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -83,6 +117,24 @@ function Sidebar() {
               <Link to="/searching" className={`sidebar-link ${isActive('/searching')}`}>
                 <span className="sidebar-icon">🔍</span>
                 <span>Searching Algorithms</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/dynamic-programming" className={`sidebar-link ${isActive('/dynamic-programming')}`}>
+                <span className="sidebar-icon">🎯</span>
+                <span>Dynamic Programming</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/greedy-algorithms" className={`sidebar-link ${isActive('/greedy-algorithms')}`}>
+                <span className="sidebar-icon">💚</span>
+                <span>Greedy Algorithms</span>
+              </Link>
+            </li>
+            <li className="sidebar-menu-item">
+              <Link to="/boyer-moore" className={`sidebar-link ${isActive('/boyer-moore')}`}>
+                <span className="sidebar-icon">🔤</span>
+                <span>Boyer-Moore</span>
               </Link>
             </li>
           </ul>
@@ -143,18 +195,6 @@ function Sidebar() {
               <Link to="/typing-speed" className={`sidebar-link ${isActive('/typing-speed')}`}>
                 <span className="sidebar-icon">⌨️</span>
                 <span>Typing Speed</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="sidebar-section">
-          <h4 className="sidebar-section-title">Assistance</h4>
-          <ul className="sidebar-menu">
-            <li className="sidebar-menu-item">
-              <Link to="/chatbot" className={`sidebar-link ${isActive('/chatbot')}`}>
-                <span className="sidebar-icon">🤖</span>
-                <span>AI Assistant</span>
               </Link>
             </li>
           </ul>

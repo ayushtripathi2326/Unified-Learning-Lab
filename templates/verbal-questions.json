@@ -1,0 +1,37 @@
+[
+  {
+    "text": "Choose the synonym of 'Happy':",
+    "category": "Verbal",
+    "difficulty": "easy",
+    "options": ["Sad", "Joyful", "Angry", "Tired"],
+    "correct": 1
+  },
+  {
+    "text": "Choose the antonym of 'Brave':",
+    "category": "Verbal",
+    "difficulty": "easy",
+    "options": ["Courageous", "Bold", "Cowardly", "Fearless"],
+    "correct": 2
+  },
+  {
+    "text": "Complete: He was so tired that he could _____ stand.",
+    "category": "Verbal",
+    "difficulty": "medium",
+    "options": ["hardly", "nearly", "closely", "almost"],
+    "correct": 0
+  },
+  {
+    "text": "Identify the error: 'Each of the students have submitted their assignment.'",
+    "category": "Verbal",
+    "difficulty": "medium",
+    "options": ["Each of", "have submitted", "their assignment", "No error"],
+    "correct": 1
+  },
+  {
+    "text": "Choose the correct spelling:",
+    "category": "Verbal",
+    "difficulty": "easy",
+    "options": ["Occurance", "Occurrence", "Occurence", "Occurrense"],
+    "correct": 1
+  }
+]

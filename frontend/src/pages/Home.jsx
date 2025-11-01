@@ -12,6 +12,13 @@ function Home() {
       color: '#10b981'
     },
     {
+      title: 'Binary Search Tree',
+      desc: 'Ordered binary tree with efficient search, insert, delete operations and traversals',
+      path: '/bst',
+      icon: '🌲',
+      color: '#2e7d32'
+    },
+    {
       title: 'Stack',
       desc: 'Explore LIFO (Last In First Out) data structure with push, pop operations',
       path: '/stack',
@@ -45,6 +52,27 @@ function Home() {
       path: '/heap',
       icon: '🔺',
       color: '#ec4899'
+    },
+    {
+      title: 'Trie',
+      desc: 'Prefix tree for efficient string search, autocomplete, and dictionary operations',
+      path: '/trie',
+      icon: '🔤',
+      color: '#9c27b0'
+    },
+    {
+      title: 'Segment Tree',
+      desc: 'Range query data structure supporting sum, min, max operations with O(log n) complexity',
+      path: '/segment-tree',
+      icon: '🌳',
+      color: '#ff5722'
+    },
+    {
+      title: 'Graph',
+      desc: 'Directed/Undirected graphs with BFS, DFS traversal and weighted edges',
+      path: '/graph',
+      icon: '🌐',
+      color: '#3b82f6'
     }
   ];
 
@@ -62,6 +90,27 @@ function Home() {
       path: '/searching',
       icon: '🔍',
       color: '#26a69a'
+    },
+    {
+      title: 'Dynamic Programming',
+      desc: 'Solve complex problems: Fibonacci, LCS, Knapsack, Coin Change with step-by-step visualization',
+      path: '/dynamic-programming',
+      icon: '🎯',
+      color: '#3f51b5'
+    },
+    {
+      title: 'Greedy Algorithms',
+      desc: 'Make locally optimal choices: Activity Selection, Fractional Knapsack, Huffman Coding',
+      path: '/greedy-algorithms',
+      icon: '💚',
+      color: '#2e7d32'
+    },
+    {
+      title: 'Boyer-Moore Algorithm',
+      desc: 'Efficient string matching with bad character and good suffix heuristics for pattern searching',
+      path: '/boyer-moore',
+      icon: '🔤',
+      color: '#e91e63'
     }
   ];
 

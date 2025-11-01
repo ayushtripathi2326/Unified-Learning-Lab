@@ -1,0 +1,37 @@
+[
+  {
+    "text": "What does DBMS stand for?",
+    "category": "DBMS",
+    "difficulty": "easy",
+    "options": ["Database Management System", "Data Backup Management System", "Digital Base Management System", "Database Maintenance System"],
+    "correct": 0
+  },
+  {
+    "text": "Which SQL command is used to retrieve data from a database?",
+    "category": "DBMS",
+    "difficulty": "easy",
+    "options": ["GET", "SELECT", "RETRIEVE", "FETCH"],
+    "correct": 1
+  },
+  {
+    "text": "What is a primary key?",
+    "category": "DBMS",
+    "difficulty": "medium",
+    "options": ["A key that allows null values", "A unique identifier for a record", "A foreign key reference", "An index key"],
+    "correct": 1
+  },
+  {
+    "text": "Which normal form removes transitive dependency?",
+    "category": "DBMS",
+    "difficulty": "hard",
+    "options": ["1NF", "2NF", "3NF", "BCNF"],
+    "correct": 2
+  },
+  {
+    "text": "What does ACID stand for in database transactions?",
+    "category": "DBMS",
+    "difficulty": "medium",
+    "options": ["Atomicity, Consistency, Isolation, Durability", "Access, Control, Isolation, Data", "Atomic, Concurrent, Isolated, Durable", "All, Complete, Independent, Data"],
+    "correct": 0
+  }
+]
