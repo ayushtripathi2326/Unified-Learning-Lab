@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import './Navbar.css';
 
-function Navbar({ user, onLogout, toggleSidebar, toggleAiChat }) {
+function Navbar({ user, onLogout, toggleSidebar }) {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -19,11 +19,7 @@ function Navbar({ user, onLogout, toggleSidebar, toggleAiChat }) {
     onLogout();
   };
 
-  const handleAiChatClick = () => {
-    if (toggleAiChat) {
-      toggleAiChat();
-    }
-  };
+
 
   const handleShortcutIconClick = () => {
     window.dispatchEvent(
@@ -86,7 +82,6 @@ function Navbar({ user, onLogout, toggleSidebar, toggleAiChat }) {
               </button>
               <button
                 className="navbar-icon-btn ai-assistant-btn"
-                onClick={handleAiChatClick}
                 title="Toggle AI Assistant"
                 aria-label="Toggle AI assistant"
                 type="button"

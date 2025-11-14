@@ -141,7 +141,6 @@ function App() {
               user={user}
               onLogout={handleLogout}
               toggleSidebar={toggleSidebar}
-              toggleAiChat={toggleAiChat}
             />
             <div className="main-container">
               {user && (
@@ -180,6 +179,7 @@ function App() {
               </div>
             </div>
             <AIChatSidebar isOpen={aiChatOpen} onClose={() => setAiChatOpen(false)} />
+            <AIAssistantButton onClick={toggleAiChat} />
             <ShortcutOverlay
               isOpen={showShortcuts}
               onClose={() => setShowShortcuts(false)}
