@@ -23,21 +23,30 @@ app.set('trust proxy', 1);
 app.use(helmet());
 
 // CORS
-const allowedOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim());
+const allowedOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean);
+console.log('Allowed CORS origins:', allowedOrigins);
 
-// CORS
+// CORS - More permissive for production debugging
 app.use(
     cors({
         origin: (origin, callback) => {
+            console.log('CORS request from origin:', origin);
             // Allow requests with no origin (like mobile apps or curl requests)
             if (!origin) return callback(null, true);
+            // In production, be more permissive temporarily
+            if (NODE_ENV === 'production' || allowedOrigins.length === 0) {
+                return callback(null, true);
+            }
             if (allowedOrigins.indexOf(origin) === -1) {
                 const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+                console.log('CORS blocked:', origin, 'Allowed:', allowedOrigins);
                 return callback(new Error(msg), false);
             }
             return callback(null, true);
         },
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
     })
 );
 
