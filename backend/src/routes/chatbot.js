@@ -38,9 +38,9 @@ router.get('/models', protect, async (req, res) => {
         // Add Google Gemini if API key exists
         if (process.env.GOOGLE_API_KEY) {
             models.push({
-                id: 'gemini-2.0-flash',
-                name: 'Google Gemini 2.0 Flash',
-                description: 'Fast and efficient AI',
+                id: 'gemini-2.5-flash',
+                name: 'Google Gemini 2.5 Flash',
+                description: 'Latest and most efficient AI model',
                 requiresApiKey: false
             });
         }
@@ -131,7 +131,7 @@ router.post('/chat', protect, async (req, res) => {
             response = generateAIResponse(message, userContext, history);
         } else if (model.startsWith('gpt-')) {
             response = await callOpenAI(message, userContext, history, model);
-        } else if (model === 'gemini-2.0-flash') {
+        } else if (model === 'gemini-2.5-flash') {
             response = await callGemini(message, userContext, history);
         } else if (model === 'groq-llama-3.1-8b-instant') {
             response = await callGroq(message, userContext, history);
@@ -458,7 +458,7 @@ async function callGemini(message, userContext, history = []) {
         }
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
         const contextPrompt = `You are a helpful learning assistant for a programming education platform.
 The user's name is ${userContext.name}.
