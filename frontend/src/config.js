@@ -7,11 +7,23 @@ export const API_BASE_URL = (typeof import.meta !== 'undefined' &&
 // Check if backend is available
 export const checkBackendHealth = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL.replace('/api', '')}/health`);
+    const response = await fetch(`${API_BASE_URL.replace('/api', '')}/health`, {
+      timeout: 5000
+    });
     return response.ok;
   } catch {
     return false;
   }
+};
+
+// Auto-retry for deployments
+export const retryBackendConnection = async (maxRetries = 6) => {
+  for (let i = 0; i < maxRetries; i++) {
+    const isHealthy = await checkBackendHealth();
+    if (isHealthy) return true;
+    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5s
+  }
+  return false;
 };
 
 export const config = {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import './AptitudeTest.css';
 
 function AptitudeTest({ user }) {
@@ -17,8 +18,7 @@ function AptitudeTest({ user }) {
   const [testStarted, setTestStarted] = useState(false);
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
-    axios.get(`${apiUrl}/questions/${category}`)
+    axios.get(`${API_BASE_URL}/questions/${category}`)
       .then(res => {
         console.log('API Response:', res.data);
         // API returns { success: true, count: X, data: [...] }
@@ -139,8 +139,7 @@ function AptitudeTest({ user }) {
     const token = localStorage.getItem('token');
 
     // Submit to backend
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
-    axios.post(`${apiUrl}/results`, resultData, {
+    axios.post(`${API_BASE_URL}/results`, resultData, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

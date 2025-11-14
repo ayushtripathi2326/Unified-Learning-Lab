@@ -27,10 +27,19 @@ process.on('unhandledRejection', (err) => {
     });
 });
 
-// Graceful shutdown
+// Graceful shutdown for zero downtime
 process.on('SIGTERM', () => {
     logger.info('SIGTERM RECEIVED. Shutting down gracefully');
     server.close(() => {
         logger.info('Process terminated!');
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', () => {
+    logger.info('SIGINT RECEIVED. Shutting down gracefully');
+    server.close(() => {
+        logger.info('Process terminated!');
+        process.exit(0);
     });
 });
