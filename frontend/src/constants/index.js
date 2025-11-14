@@ -1,8 +1,8 @@
 // API Configuration
 // Supports both Vite (VITE_) and Create React App (REACT_APP_) env variables
 export const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL ||
     process.env.REACT_APP_API_BASE_URL ||
-    process.env.REACT_APP_API_URL ||
     'https://unified-learning-lab.onrender.com/api';
 
 // App Routes

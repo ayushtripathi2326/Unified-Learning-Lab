@@ -17,7 +17,7 @@ function AptitudeTest({ user }) {
   const [testStarted, setTestStarted] = useState(false);
 
   useEffect(() => {
-    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
     axios.get(`${apiUrl}/questions/${category}`)
       .then(res => {
         console.log('API Response:', res.data);
@@ -139,7 +139,7 @@ function AptitudeTest({ user }) {
     const token = localStorage.getItem('token');
 
     // Submit to backend
-    const apiUrl = process.env.REACT_APP_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
+    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
     axios.post(`${apiUrl}/results`, resultData, {
       headers: {
         'Authorization': `Bearer ${token}`

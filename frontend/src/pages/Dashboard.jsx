@@ -13,7 +13,7 @@ function Dashboard({ user }) {
 
   useEffect(() => {
     if (user) {
-      const apiUrl = process.env.REACT_APP_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
       const token = localStorage.getItem('token');
       axios.get(`${apiUrl}/results/user`, {
         headers: { Authorization: `Bearer ${token}` }

@@ -19,7 +19,7 @@ function Login({ setUser }) {
 
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const apiUrl = process.env.REACT_APP_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
+      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
       const res = await axios.post(`${apiUrl.replace('/api', '')}${endpoint}`, formData);
 
       if (isLogin) {
