@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useToast } from '../components/Toast';
+import { API_BASE_URL, checkBackendHealth } from '../config';
 import './Login.css';
 
 function Login({ setUser }) {
@@ -9,18 +10,28 @@ function Login({ setUser }) {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [backendAvailable, setBackendAvailable] = useState(null);
   const navigate = useNavigate();
   const { showSuccess, showError } = useToast();
+
+  useEffect(() => {
+    checkBackendHealth().then(setBackendAvailable);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
     setLoading(true);
 
+    if (backendAvailable === false) {
+      setErrors(['Backend service is not available. Please try again later.']);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
-      const res = await axios.post(`${apiUrl.replace('/api', '')}${endpoint}`, formData);
+      const endpoint = isLogin ? '/auth/login' : '/auth/register';
+      const res = await axios.post(`${API_BASE_URL}${endpoint}`, formData);
 
       if (isLogin) {
         localStorage.setItem('token', res.data.token);
@@ -55,6 +66,18 @@ function Login({ setUser }) {
     <div className="login-page">
       <div className="login-card">
         <h2>{isLogin ? '🎓 Login' : '📝 Register'}</h2>
+        
+        {backendAvailable === false && (
+          <div className="warning-message">
+            ⚠️ Backend service unavailable. Please try again later.
+          </div>
+        )}
+        
+        {backendAvailable === null && (
+          <div className="info-message">
+            🔄 Checking backend status...
+          </div>
+        )}
 
         {errors.length > 0 && (
           <div className="error-container">
