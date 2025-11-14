@@ -34,7 +34,7 @@ function Dashboard({ user }) {
     } else {
       setLoading(false);
     }
-  }, [user, showSuccess, showError]);
+  }, [user]);
 
   const quickLinks = [
     { title: 'Aptitude Test', path: '/aptitude/Aptitude', icon: '🧮', color: '#f59e0b' },
