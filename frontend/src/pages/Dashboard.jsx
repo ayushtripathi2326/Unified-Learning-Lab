@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useToast } from '../components/Toast';
@@ -13,27 +13,50 @@ function Dashboard({ user }) {
   const { showError, showSuccess } = useToast();
 
   useEffect(() => {
-    if (user) {
+    let isMounted = true;
+    
+    const fetchResults = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
       const token = localStorage.getItem('token');
-      axios.get(`${API_BASE_URL}/results/user`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(res => {
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await axios.get(`${API_BASE_URL}/results/user`, {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 10000
+        });
+        
+        if (isMounted) {
           const resultsData = res.data?.data || res.data || [];
           setResults(resultsData);
           setLoading(false);
-          if (resultsData.length > 0) {
-            showSuccess('Results loaded successfully!');
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          showError('Failed to load results. Please try again.');
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error('Dashboard error:', err.response?.status, err.message);
+          setResults([]);
           setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
+          
+          if (err.response?.status === 401) {
+            localStorage.clear();
+            window.location.href = '/login';
+          }
+        }
+      }
+    };
+
+    fetchResults();
+    
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   const quickLinks = [
@@ -53,32 +76,29 @@ function Dashboard({ user }) {
     { title: 'CNN Visualizer', path: '/cnn', icon: '🧠', color: '#ec4899' }
   ];
 
-  const getAverageScore = () => {
-    if (results.length === 0) return 0;
-    return (results.reduce((acc, r) => acc + r.percentage, 0) / results.length).toFixed(1);
-  };
+  const stats = useMemo(() => {
+    if (results.length === 0) {
+      return {
+        averageScore: 0,
+        bestScore: 0,
+        totalTestTime: 0,
+        recentActivity: [],
+        categoryCount: {}
+      };
+    }
 
-  const getBestScore = () => {
-    if (results.length === 0) return 0;
-    return Math.max(...results.map(r => r.percentage));
-  };
-
-  const getTotalTestTime = () => {
-    // Assuming each test takes 30 minutes
-    return Math.floor((results.length * 30) / 60);
-  };
-
-  const getTestsByCategory = () => {
+    const averageScore = (results.reduce((acc, r) => acc + r.percentage, 0) / results.length).toFixed(1);
+    const bestScore = Math.max(...results.map(r => r.percentage));
+    const totalTestTime = Math.floor((results.length * 30) / 60);
+    const recentActivity = results.slice(0, 5);
+    
     const categoryCount = {};
     results.forEach(result => {
       categoryCount[result.category] = (categoryCount[result.category] || 0) + 1;
     });
-    return categoryCount;
-  };
 
-  const getRecentActivity = () => {
-    return results.slice(0, 5);
-  };
+    return { averageScore, bestScore, totalTestTime, recentActivity, categoryCount };
+  }, [results]);
 
   return (
     <div className="dashboard">
@@ -114,7 +134,7 @@ function Dashboard({ user }) {
             <div className="stat-card success" style={{'--stat-index': 1}}>
               <div className="stat-icon">📈</div>
               <div className="stat-content">
-                <div className="stat-value">{getAverageScore()}%</div>
+                <div className="stat-value">{stats.averageScore}%</div>
                 <div className="stat-label">Average Score</div>
               </div>
             </div>
@@ -122,7 +142,7 @@ function Dashboard({ user }) {
             <div className="stat-card warning" style={{'--stat-index': 2}}>
               <div className="stat-icon">🏆</div>
               <div className="stat-content">
-                <div className="stat-value">{getBestScore()}%</div>
+                <div className="stat-value">{stats.bestScore}%</div>
                 <div className="stat-label">Best Score</div>
               </div>
             </div>
@@ -130,7 +150,7 @@ function Dashboard({ user }) {
             <div className="stat-card info" style={{'--stat-index': 3}}>
               <div className="stat-icon">⏱️</div>
               <div className="stat-content">
-                <div className="stat-value">{getTotalTestTime()}h</div>
+                <div className="stat-value">{stats.totalTestTime}h</div>
                 <div className="stat-label">Total Study Time</div>
               </div>
             </div>
@@ -201,7 +221,7 @@ function Dashboard({ user }) {
                 </tr>
               </thead>
               <tbody>
-                {getRecentActivity().map((result, idx) => (
+                {stats.recentActivity.map((result, idx) => (
                   <tr key={idx} className="result-row">
                     <td className="category-cell">
                       <span className="category-badge">{result.category}</span>
