@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useToast } from '../components/Toast';
 import PerformanceChart from '../components/PerformanceChart';
 import { SkeletonStat, SkeletonTable, SkeletonCard } from '../components/Skeleton';
+import { API_BASE_URL } from '../config';
 import './Dashboard.css';
 
 function Dashboard({ user }) {
@@ -13,9 +14,8 @@ function Dashboard({ user }) {
 
   useEffect(() => {
     if (user) {
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://unified-learning-lab.onrender.com/api';
       const token = localStorage.getItem('token');
-      axios.get(`${apiUrl}/results/user`, {
+      axios.get(`${API_BASE_URL}/results/user`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
