@@ -29,6 +29,7 @@ coverage/
 # Admin creation script (security)
 backend/createAdmin.js
 backend/scripts/createAdmin.js
+backend/scripts/adminManager.js
 
 # IDE files
 .vscode/
