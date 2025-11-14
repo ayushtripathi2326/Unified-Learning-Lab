@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const { GoogleGenAI } = require('@google/genai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const OpenAI = require('openai');
 const Groq = require('groq-sdk');
 const { fetch } = require('undici');
@@ -457,7 +457,8 @@ async function callGemini(message, userContext, history = []) {
             throw new Error('Google API key not configured. Please contact administrator.');
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
 
         const contextPrompt = `You are a helpful learning assistant for a programming education platform.
 The user's name is ${userContext.name}.
@@ -467,12 +468,9 @@ Provide clear, educational, and encouraging responses about programming, data st
 
 User question: ${message}`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash-exp',
-            contents: contextPrompt
-        });
-
-        return response.text;
+        const result = await model.generateContent(contextPrompt);
+        const response = await result.response;
+        return response.text();
     } catch (error) {
         console.error('Gemini API error:', error.message);
         if (error.message.includes('not configured')) {
