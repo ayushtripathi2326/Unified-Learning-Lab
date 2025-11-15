@@ -2,7 +2,6 @@ const app = require('./app');
 const connectDB = require('./config/database');
 const { PORT, NODE_ENV } = require('./config/env');
 const logger = require('./utils/logger');
-const mongoose = require('mongoose');
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -16,8 +15,8 @@ connectDB();
 
 // Keep connection alive for free tier
 setInterval(() => {
-    // Simple keep-alive without mongoose dependency
-    console.log('Keep-alive ping');
+    // Simple keep-alive ping
+    console.log('Keep-alive ping:', new Date().toISOString());
 }, 30000);
 
 // Start server
