@@ -166,6 +166,11 @@ class ApiClient {
     patch(url, data, config) {
         return this.client.patch(url, data, config);
     }
+
+    // Special method for long-running operations (like bulk imports)
+    postWithLongTimeout(url, data, timeoutMs = 60000) {
+        return this.client.post(url, data, { timeout: timeoutMs });
+    }
 }
 
 export default new ApiClient();
