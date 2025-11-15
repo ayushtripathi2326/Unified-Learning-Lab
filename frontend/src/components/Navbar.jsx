@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import './Navbar.css';
 
-function Navbar({ user, onLogout, toggleSidebar }) {
+function Navbar({ user, onLogout, toggleSidebar, toggleAiChat }) {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -85,6 +85,7 @@ function Navbar({ user, onLogout, toggleSidebar }) {
                 title="Toggle AI Assistant"
                 aria-label="Toggle AI assistant"
                 type="button"
+                onClick={toggleAiChat}
               >
                 🤖
               </button>
