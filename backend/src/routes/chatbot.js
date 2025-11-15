@@ -6,8 +6,8 @@ const OpenAI = require('openai');
 const Groq = require('groq-sdk');
 const { fetch } = require('undici');
 
-// Get available AI models
-router.get('/models', protect, async (req, res) => {
+// Get available AI models (public endpoint)
+router.get('/models', async (req, res) => {
     try {
         const models = [
             {
