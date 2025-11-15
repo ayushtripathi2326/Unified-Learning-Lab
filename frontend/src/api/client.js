@@ -7,12 +7,16 @@ class ApiClient {
     constructor() {
         this.client = axios.create({
             baseURL: API_BASE_URL,
-            timeout: 10000,
+            timeout: 30000, // Increased for free tier
             headers: {
                 'Content-Type': 'application/json',
+                'Cache-Control': 'max-age=300', // 5min cache
             },
-            withCredentials: true, // Allow cookies
+            withCredentials: true,
         });
+        
+        // Simple cache for GET requests
+        this.cache = new Map();
 
         this.isRefreshing = false;
         this.failedQueue = [];
@@ -133,7 +137,18 @@ class ApiClient {
     }
 
     get(url, config) {
-        return this.client.get(url, config);
+        // Simple cache for GET requests (5min TTL)
+        const cacheKey = `${url}_${JSON.stringify(config)}`;
+        const cached = this.cache.get(cacheKey);
+        
+        if (cached && Date.now() - cached.timestamp < 300000) {
+            return Promise.resolve(cached.data);
+        }
+        
+        return this.client.get(url, config).then(data => {
+            this.cache.set(cacheKey, { data, timestamp: Date.now() });
+            return data;
+        });
     }
 
     post(url, data, config) {

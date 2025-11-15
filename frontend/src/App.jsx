@@ -5,35 +5,25 @@ import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AIChatSidebar from './components/AIChatSidebar';
-import Home from './pages/Home';
-import BinaryTree from './pages/BinaryTree';
-import BST from './pages/BST';
-import BinarySearch from './pages/BinarySearch';
-import StackQueue from './pages/StackQueue';
-import Stack from './pages/Stack';
-import Queue from './pages/Queue';
-import LinkedList from './pages/LinkedList';
-import HashTable from './pages/HashTable';
-import Heap from './pages/Heap';
-import Trie from './pages/Trie';
-import SegmentTree from './pages/SegmentTree';
-import Graph from './pages/Graph';
-import SortingVisualizer from './pages/SortingVisualizer';
-import SearchingVisualizer from './pages/SearchingVisualizer';
-import DynamicProgramming from './pages/DynamicProgramming';
-import GreedyAlgorithms from './pages/GreedyAlgorithms';
-import BoyerMoore from './pages/BoyerMoore';
-import AptitudeTest from './pages/AptitudeTest';
-import CNNVisualizer from './pages/CNNVisualizer';
-import TypingSpeed from './pages/TypingSpeed';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Chatbot from './pages/Chatbot';
-import Admin from './pages/Admin';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import { lazy, Suspense } from 'react';
+
+// Lazy load components for better performance
+const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Admin = lazy(() => import('./pages/Admin'));
+const AptitudeTest = lazy(() => import('./pages/AptitudeTest'));
+const BinaryTree = lazy(() => import('./pages/BinaryTree'));
+const BST = lazy(() => import('./pages/BST'));
+const BinarySearch = lazy(() => import('./pages/BinarySearch'));
+const StackQueue = lazy(() => import('./pages/StackQueue'));
+const CNNVisualizer = lazy(() => import('./pages/CNNVisualizer'));
+const Chatbot = lazy(() => import('./pages/Chatbot'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 
 import ShortcutOverlay from './components/ShortcutOverlay';
+import LoadingSpinner from './components/LoadingSpinner';
 import { initBackendWakeup } from './utils/backendWakeup';
 import { startKeepAlive, stopKeepAlive } from './utils/keepAlive';
 import './App.css';
@@ -160,7 +150,8 @@ function App() {
                 <Sidebar user={user} className={sidebarOpen ? '' : 'collapsed'} />
               )}
               <div className={`content ${!user || !sidebarOpen ? 'full-width' : ''}`}>
-                <Routes>
+                <Suspense fallback={<LoadingSpinner message="Loading page..." />}>
+                  <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login setUser={setUser} />} />
                   <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Navigate to="/login" />} />
@@ -188,7 +179,8 @@ function App() {
                   <Route path="/chatbot" element={<Chatbot />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password/:token" element={<ResetPassword />} />
-                </Routes>
+                  </Routes>
+                </Suspense>
               </div>
             </div>
             <AIChatSidebar isOpen={aiChatOpen} onClose={() => setAiChatOpen(false)} />
