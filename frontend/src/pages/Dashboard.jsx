@@ -30,7 +30,7 @@ function Dashboard({ user }) {
       try {
         const res = await axios.get(`${API_BASE_URL}/results/user`, {
           headers: { Authorization: `Bearer ${token}` },
-          timeout: 10000
+          timeout: 30000 // 30s for sleeping backend
         });
         
         if (isMounted) {
@@ -41,6 +41,17 @@ function Dashboard({ user }) {
       } catch (err) {
         if (isMounted) {
           console.error('Dashboard error:', err.response?.status, err.message);
+          
+          // Handle timeout (backend sleeping)
+          if (err.code === 'ECONNABORTED' || err.message.includes('timeout')) {
+            console.log('Backend is waking up, retrying...');
+            // Retry once after backend wakes up
+            setTimeout(() => {
+              if (isMounted) fetchResults();
+            }, 5000);
+            return;
+          }
+          
           setResults([]);
           setLoading(false);
           
