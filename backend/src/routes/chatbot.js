@@ -109,7 +109,8 @@ router.post('/chat', protect, async (req, res) => {
         const recentResults = await Result.find({ user: req.user._id })
             .sort({ createdAt: -1 })
             .limit(5)
-            .populate('user', 'name email');
+            .select('category score totalQuestions createdAt')
+            .lean(); // Faster queries for free tier
 
         // Build context from user data
         const userContext = {

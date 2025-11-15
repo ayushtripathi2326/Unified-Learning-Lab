@@ -35,6 +35,7 @@ import ResetPassword from './pages/ResetPassword';
 
 import ShortcutOverlay from './components/ShortcutOverlay';
 import { initBackendWakeup } from './utils/backendWakeup';
+import { startKeepAlive, stopKeepAlive } from './utils/keepAlive';
 import './App.css';
 
 const GLOBAL_SHORTCUT_SECTIONS = [
@@ -100,6 +101,13 @@ function App() {
   useEffect(() => {
     // Wake up backend on app load
     initBackendWakeup();
+    
+    // Start keep-alive for free tier
+    startKeepAlive();
+    
+    return () => {
+      stopKeepAlive();
+    };
     
     const handleGlobalKeydown = (event) => {
       const target = event.target;

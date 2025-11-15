@@ -5,13 +5,14 @@ const rateLimit = require('express-rate-limit');
  */
 exports.apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 500, // Limit each IP to 500 requests per windowMs (increased for development)
+    max: 100, // Reduced for free tier memory
     message: {
         success: false,
         message: 'Too many requests from this IP, please try again later.',
     },
     standardHeaders: true,
     legacyHeaders: false,
+    skip: (req, res) => res.statusCode < 400 // Skip successful requests to save memory
 });
 
 /**

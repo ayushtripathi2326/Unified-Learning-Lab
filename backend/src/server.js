@@ -10,8 +10,15 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-// Connect to database
+// Connect to database with free tier optimizations
 connectDB();
+
+// Optimize for free tier - close idle connections
+setInterval(() => {
+    if (mongoose.connection.readyState === 1) {
+        mongoose.connection.db.admin().ping();
+    }
+}, 30000); // Ping every 30 seconds
 
 // Start server
 const server = app.listen(PORT, () => {
