@@ -173,7 +173,7 @@ function Admin() {
         const question = questionsArray[i];
         try {
           console.log(`Importing question ${i + 1}:`, question);
-          await apiClient.post(`${API_BASE}/questions`, question);
+          await apiClient.post(`${API_BASE}/questions`, question, { timeout: 60000 }); // 60s for free tier
           successCount++;
         } catch (err) {
           errorCount++;
