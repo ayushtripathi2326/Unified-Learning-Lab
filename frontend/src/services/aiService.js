@@ -1,4 +1,5 @@
 import apiClient from '../api/client';
+import { API_BASE_URL } from '../config';
 
 class AIService {
   constructor() {
@@ -9,15 +10,16 @@ class AIService {
   // Fetch available models from backend
   async fetchAvailableModels() {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        // No token, return default model
-        return [{ id: 'built-in', name: 'Built-in AI', description: 'Default AI' }];
-      }
+      // Use direct fetch to bypass auth interceptors
+      const response = await fetch(`${API_BASE_URL}/chatbot/models`);
       
-      const response = await apiClient.get('/chatbot/models');
-      this.availableModels = response.models;
-      return this.availableModels;
+      if (response.ok) {
+        const data = await response.json();
+        this.availableModels = data.models;
+        return this.availableModels;
+      } else {
+        throw new Error('Failed to fetch models');
+      }
     } catch (error) {
       console.error('Failed to fetch models:', error);
       // Return a default model if fetching fails
