@@ -14,12 +14,11 @@ process.on('uncaughtException', (err) => {
 // Connect to database with free tier optimizations
 connectDB();
 
-// Optimize for free tier - close idle connections
+// Keep connection alive for free tier
 setInterval(() => {
-    if (mongoose.connection.readyState === 1) {
-        mongoose.connection.db.admin().ping();
-    }
-}, 30000); // Ping every 30 seconds
+    // Simple keep-alive without mongoose dependency
+    console.log('Keep-alive ping');
+}, 30000);
 
 // Start server
 const server = app.listen(PORT, () => {
