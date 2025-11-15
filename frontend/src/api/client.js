@@ -97,9 +97,12 @@ class ApiClient {
 
                 // Handle other 401 errors (invalid token, etc.)
                 if (error.response?.status === 401 && !originalRequest._retry) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('refreshToken');
-                    window.location.href = '/login';
+                    // Don't auto-redirect for chatbot endpoints - let component handle it
+                    if (!originalRequest.url?.includes('/chatbot/')) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('refreshToken');
+                        window.location.href = '/login';
+                    }
                 }
 
                 // Handle account locked

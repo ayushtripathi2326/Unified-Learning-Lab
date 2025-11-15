@@ -9,6 +9,12 @@ class AIService {
   // Fetch available models from backend
   async fetchAvailableModels() {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        // No token, return default model
+        return [{ id: 'built-in', name: 'Built-in AI', description: 'Default AI' }];
+      }
+      
       const response = await apiClient.get('/chatbot/models');
       this.availableModels = response.models;
       return this.availableModels;
