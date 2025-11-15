@@ -87,7 +87,9 @@ class ApiClient {
 
                         localStorage.removeItem('token');
                         localStorage.removeItem('refreshToken');
-                        window.location.href = '/login';
+                        if (window.location.pathname !== '/login') {
+                            window.location.pathname = '/login';
+                        }
 
                         return Promise.reject(refreshError);
                     } finally {
@@ -101,7 +103,10 @@ class ApiClient {
                     if (!originalRequest.url?.includes('/chatbot/')) {
                         localStorage.removeItem('token');
                         localStorage.removeItem('refreshToken');
-                        window.location.href = '/login';
+                        // Use React Router navigation instead of window.location
+                        if (window.location.pathname !== '/login') {
+                            window.location.pathname = '/login';
+                        }
                     }
                 }
 
