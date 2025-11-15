@@ -315,15 +315,29 @@ function Admin() {
   useEffect(() => {
     console.log('Active tab changed:', activeTab);
 
-    if (activeTab === 'dashboard') {
-      fetchStats();
-    } else if (activeTab === 'users') {
-      fetchUsers();
-    } else if (activeTab === 'questions') {
-      fetchQuestions();
-    } else if (activeTab === 'results') {
-      fetchResults();
-    }
+    // Wake up backend first, then fetch data
+    const wakeUpAndFetch = async () => {
+      try {
+        await fetch('https://unified-learning-lab-backend.onrender.com/api/health');
+      } catch (e) {
+        console.log('Backend wakeup attempt...');
+      }
+      
+      // Wait 2 seconds for backend to wake up
+      setTimeout(() => {
+        if (activeTab === 'dashboard') {
+          fetchStats();
+        } else if (activeTab === 'users') {
+          fetchUsers();
+        } else if (activeTab === 'questions') {
+          fetchQuestions();
+        } else if (activeTab === 'results') {
+          fetchResults();
+        }
+      }, 2000);
+    };
+
+    wakeUpAndFetch();
   }, [activeTab]);
 
   // Dashboard Tab
