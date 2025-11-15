@@ -95,10 +95,6 @@ function App() {
     // Start keep-alive for free tier
     startKeepAlive();
     
-    return () => {
-      stopKeepAlive();
-    };
-    
     const handleGlobalKeydown = (event) => {
       const target = event.target;
       const tagName = target?.tagName;
@@ -130,6 +126,7 @@ function App() {
     window.addEventListener('keydown', handleGlobalKeydown);
 
     return () => {
+      stopKeepAlive();
       window.removeEventListener('keydown', handleGlobalKeydown);
     };
   }, []);
@@ -160,22 +157,8 @@ function App() {
                   <Route path="/bst" element={<BST />} />
                   <Route path="/binary-search" element={<BinarySearch />} />
                   <Route path="/stack-queue" element={<StackQueue />} />
-                  <Route path="/stack" element={<Stack />} />
-                  <Route path="/queue" element={<Queue />} />
-                  <Route path="/linked-list" element={<LinkedList />} />
-                  <Route path="/hash-table" element={<HashTable />} />
-                  <Route path="/heap" element={<Heap />} />
-                  <Route path="/trie" element={<Trie />} />
-                  <Route path="/segment-tree" element={<SegmentTree />} />
-                  <Route path="/graph" element={<Graph />} />
-                  <Route path="/sorting" element={<SortingVisualizer />} />
-                  <Route path="/searching" element={<SearchingVisualizer />} />
-                  <Route path="/dynamic-programming" element={<DynamicProgramming />} />
-                  <Route path="/greedy-algorithms" element={<GreedyAlgorithms />} />
-                  <Route path="/boyer-moore" element={<BoyerMoore />} />
                   <Route path="/aptitude/:category" element={<AptitudeTest user={user} />} />
                   <Route path="/cnn" element={<CNNVisualizer />} />
-                  <Route path="/typing-speed" element={<TypingSpeed />} />
                   <Route path="/chatbot" element={<Chatbot />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password/:token" element={<ResetPassword />} />
