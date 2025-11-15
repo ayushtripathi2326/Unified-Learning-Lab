@@ -2,6 +2,7 @@ const app = require('./app');
 const connectDB = require('./config/database');
 const { PORT, NODE_ENV } = require('./config/env');
 const logger = require('./utils/logger');
+const mongoose = require('mongoose');
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
