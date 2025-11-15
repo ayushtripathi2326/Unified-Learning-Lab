@@ -32,7 +32,7 @@ import Chatbot from './pages/Chatbot';
 import Admin from './pages/Admin';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import AIAssistantButton from './components/AIAssistantButton';
+
 import ShortcutOverlay from './components/ShortcutOverlay';
 import { initBackendWakeup } from './utils/backendWakeup';
 import './App.css';
@@ -184,7 +184,6 @@ function App() {
               </div>
             </div>
             <AIChatSidebar isOpen={aiChatOpen} onClose={() => setAiChatOpen(false)} />
-            <AIAssistantButton onClick={toggleAiChat} />
             <ShortcutOverlay
               isOpen={showShortcuts}
               onClose={() => setShowShortcuts(false)}
