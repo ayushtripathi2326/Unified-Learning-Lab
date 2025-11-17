@@ -19,8 +19,8 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "react-scripts start",
-    "build": "BUILD_PATH=dist react-scripts build",
-    "build:win": "set BUILD_PATH=dist && react-scripts build",
+    "build": "react-scripts build",
+    "build:win": "react-scripts build",
     "lint": "eslint src/",
     "format": "prettier --write src/"
   },

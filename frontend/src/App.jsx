@@ -1,32 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ToastProvider } from './components/Toast';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AIChatSidebar from './components/AIChatSidebar';
-import { lazy, Suspense } from 'react';
-
-// Lazy load components for better performance
-const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/Login'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Admin = lazy(() => import('./pages/Admin'));
-const AptitudeTest = lazy(() => import('./pages/AptitudeTest'));
-const BinaryTree = lazy(() => import('./pages/BinaryTree'));
-const BST = lazy(() => import('./pages/BST'));
-const BinarySearch = lazy(() => import('./pages/BinarySearch'));
-const StackQueue = lazy(() => import('./pages/StackQueue'));
-const CNNVisualizer = lazy(() => import('./pages/CNNVisualizer'));
-const Chatbot = lazy(() => import('./pages/Chatbot'));
-const TypingSpeed = lazy(() => import('./pages/TypingSpeed'));
-const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
-const ResetPassword = lazy(() => import('./pages/ResetPassword'));
-
 import ShortcutOverlay from './components/ShortcutOverlay';
 import LoadingSpinner from './components/LoadingSpinner';
 import { initBackendWakeup } from './utils/backendWakeup';
 import { startKeepAlive, stopKeepAlive } from './utils/keepAlive';
+import { routes } from './config';
+import { generateRoutes } from './utils/routeGenerator';
 import './App.css';
 
 const GLOBAL_SHORTCUT_SECTIONS = [
@@ -150,20 +134,9 @@ function App() {
               <div className={`content ${!user || !sidebarOpen ? 'full-width' : ''}`}>
                 <Suspense fallback={<LoadingSpinner message="Loading page..." />}>
                   <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login setUser={setUser} />} />
-                  <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Navigate to="/login" />} />
-                  <Route path="/admin" element={user && user.role === 'admin' ? <Admin /> : <Navigate to="/login" />} />
-                  <Route path="/binary-tree" element={<BinaryTree />} />
-                  <Route path="/bst" element={<BST />} />
-                  <Route path="/binary-search" element={<BinarySearch />} />
-                  <Route path="/stack-queue" element={<StackQueue />} />
-                  <Route path="/aptitude/:category" element={<AptitudeTest user={user} />} />
-                  <Route path="/cnn" element={<CNNVisualizer />} />
-                  <Route path="/chatbot" element={<Chatbot />} />
-                  <Route path="/typing-speed" element={<TypingSpeed />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password/:token" element={<ResetPassword />} />
+                    {generateRoutes(routes, user, setUser).map((route, index) => (
+                      <Route key={index} path={route.path} element={route.element} />
+                    ))}
                   </Routes>
                 </Suspense>
               </div>

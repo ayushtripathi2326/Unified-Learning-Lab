@@ -10,9 +10,7 @@ node_modules/
 
 # Build outputs
 build/
-dist/
 */build/
-*/dist/
 
 # Logs
 *.log
