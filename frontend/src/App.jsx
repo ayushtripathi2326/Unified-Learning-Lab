@@ -9,7 +9,7 @@ import ShortcutOverlay from './components/ShortcutOverlay';
 import LoadingSpinner from './components/LoadingSpinner';
 import { initBackendWakeup } from './utils/backendWakeup';
 import { startKeepAlive, stopKeepAlive } from './utils/keepAlive';
-import { routes } from './config';
+import { routes } from './config/routes.config';
 import { generateRoutes } from './utils/routeGenerator';
 import './App.css';
 
