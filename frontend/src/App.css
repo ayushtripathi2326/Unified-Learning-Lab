@@ -4,6 +4,24 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -15,6 +33,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Selection Styling */
@@ -35,7 +56,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -49,7 +70,7 @@ body {
 
 .app {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: var(--bg-primary);
 }
 
 .main-container {
@@ -60,12 +81,12 @@ body {
 
 .content {
   flex: 1;
-  padding: 0; /* Remove padding for full screen */
+  padding: 0;
   overflow-y: auto;
-  background: #f8f9fa;
-  margin-left: 0; /* No margin - sidebar overlays */
+  background: var(--bg-primary);
+  margin-left: 0;
   transition: margin-left 0.3s ease, width 0.3s ease;
-  width: 100%; /* Always full width */
+  width: 100%;
 }
 
 .content.full-width {
@@ -151,12 +172,14 @@ body {
 /* Input Styles */
 input, select, textarea {
   padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
   width: 100%;
   font-family: inherit;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 input:focus, select:focus, textarea:focus {
@@ -167,10 +190,10 @@ input:focus, select:focus, textarea:focus {
 
 /* Card Styles */
 .card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--shadow);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
