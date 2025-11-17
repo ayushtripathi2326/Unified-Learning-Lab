@@ -26,29 +26,27 @@ app.use(helmet());
 const allowedOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean);
 console.log('Allowed CORS origins:', allowedOrigins);
 
-// CORS - More permissive for production debugging
+// CORS - Allow all origins in production for now
 app.use(
     cors({
-        origin: (origin, callback) => {
-            console.log('CORS request from origin:', origin);
-            // Allow requests with no origin (like mobile apps or curl requests)
-            if (!origin) return callback(null, true);
-            // In production, be more permissive temporarily
-            if (NODE_ENV === 'production' || allowedOrigins.length === 0) {
-                return callback(null, true);
-            }
-            if (allowedOrigins.indexOf(origin) === -1) {
-                const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-                console.log('CORS blocked:', origin, 'Allowed:', allowedOrigins);
-                return callback(new Error(msg), false);
-            }
-            return callback(null, true);
-        },
+        origin: true, // Allow all origins
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
     })
 );
+
+// Additional CORS headers for preflight
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
 
 // Body parser
 app.use(express.json());
