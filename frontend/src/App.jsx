@@ -19,6 +19,7 @@ const BinarySearch = lazy(() => import('./pages/BinarySearch'));
 const StackQueue = lazy(() => import('./pages/StackQueue'));
 const CNNVisualizer = lazy(() => import('./pages/CNNVisualizer'));
 const Chatbot = lazy(() => import('./pages/Chatbot'));
+const TypingSpeed = lazy(() => import('./pages/TypingSpeed'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 
@@ -160,6 +161,7 @@ function App() {
                   <Route path="/aptitude/:category" element={<AptitudeTest user={user} />} />
                   <Route path="/cnn" element={<CNNVisualizer />} />
                   <Route path="/chatbot" element={<Chatbot />} />
+                  <Route path="/typing-speed" element={<TypingSpeed />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/reset-password/:token" element={<ResetPassword />} />
                   </Routes>
