@@ -94,5 +94,12 @@ export const routes = [
     public: true,
     title: 'AI Chatbot',
     category: 'tool'
+  },
+  {
+    path: '/coding-test',
+    component: 'CodingTest',
+    public: true,
+    title: 'Coding Test',
+    category: 'test'
   }
 ];

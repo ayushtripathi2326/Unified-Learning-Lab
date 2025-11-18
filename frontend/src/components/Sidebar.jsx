@@ -160,7 +160,7 @@ function Sidebar({ user, className = '' }) {
               </Link>
             </li>
             <li className="sidebar-menu-item">
-              <Link to="/aptitude/Coding" className={`sidebar-link ${isActive('/aptitude/Coding')}`}>
+              <Link to="/coding-test" className={`sidebar-link ${isActive('/coding-test')}`}>
                 <span className="sidebar-icon">💻</span>
                 <span>Coding Test</span>
               </Link>
