@@ -1,4 +1,4 @@
-const Question = require('../models/Question');
+const Question = require('../../models/Question');
 
 exports.bulkImportQuestions = async (req, res) => {
   try {
