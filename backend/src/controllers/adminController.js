@@ -135,9 +135,27 @@ exports.getStats = asyncHandler(async (req, res) => {
     const totalUsers = await User.countDocuments();
     const activeUsers = await User.countDocuments({ isActive: true });
 
-    // Get question counts from all category collections
-    const questionStats = await getQuestionStats();
-    const totalQuestions = Object.values(questionStats).reduce((sum, count) => sum + count, 0);
+    // Get question counts - try unified model first, then category collections
+    let questionStats = {};
+    let totalQuestions = 0;
+    
+    try {
+        // Try unified Question model
+        const categoryStats = await Question.aggregate([
+            { $match: { isActive: { $ne: false } } },
+            { $group: { _id: '$category', count: { $sum: 1 } } }
+        ]);
+        
+        categoryStats.forEach(stat => {
+            questionStats[stat._id] = stat.count;
+        });
+        
+        totalQuestions = Object.values(questionStats).reduce((sum, count) => sum + count, 0);
+    } catch (err) {
+        // Fallback to category collections
+        questionStats = await getQuestionStats();
+        totalQuestions = Object.values(questionStats).reduce((sum, count) => sum + count, 0);
+    }
 
     const totalResults = await Result.countDocuments();
 
@@ -215,31 +233,96 @@ exports.getStats = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 /**
- * @desc    Get all questions (from all category collections)
+ * @desc    Get all questions with enhanced filtering and pagination
  * @route   GET /api/admin/questions
  * @access  Private/Admin
  */
 exports.getAllQuestions = asyncHandler(async (req, res) => {
-    const { category } = req.query;
+    const {
+        category,
+        difficulty,
+        search,
+        dateRange,
+        sortBy = 'createdAt',
+        sortOrder = 'desc',
+        page = 1,
+        limit = 50
+    } = req.query;
 
+    // Build filter object
+    const filter = { isActive: { $ne: false } }; // Include active questions
+    
+    if (category) filter.category = category;
+    if (difficulty) filter.difficulty = difficulty;
+    
+    // Search in question text and options
+    if (search) {
+        filter.$or = [
+            { text: { $regex: search, $options: 'i' } },
+            { options: { $elemMatch: { $regex: search, $options: 'i' } } }
+        ];
+    }
+    
+    // Date range filter
+    if (dateRange) {
+        const now = new Date();
+        let startDate;
+        
+        switch (dateRange) {
+            case 'today':
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                break;
+            case 'week':
+                startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                break;
+            case 'month':
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                break;
+        }
+        
+        if (startDate) {
+            filter.createdAt = { $gte: startDate };
+        }
+    }
+
+    // Build sort object
+    const sort = {};
+    sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+    // Execute query with pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    
+    try {
+        // Try to get from unified Question model first
+        const [questions, total] = await Promise.all([
+            Question.find(filter)
+                .sort(sort)
+                .skip(skip)
+                .limit(parseInt(limit))
+                .lean(),
+            Question.countDocuments(filter)
+        ]);
+
+        if (questions.length > 0) {
+            return res.json(questions);
+        }
+    } catch (err) {
+        console.log('Unified model not available, falling back to category collections');
+    }
+
+    // Fallback to category-specific collections
     let questions;
     if (category) {
-        // Get questions from specific category collection
         questions = await getQuestionsByCategory(category);
     } else {
-        // Get questions from all category collections
         questions = await getAllQuestions();
     }
 
-    res.json({
-        success: true,
-        data: questions,
-        message: `Retrieved from ${category ? category.toLowerCase() + '_questions' : 'all category collections'}`
-    });
+    res.json(questions);
 });
 
 /**
- * @desc    Create question (in category-specific collection)
+ * @desc    Create question with enhanced features
  * @route   POST /api/admin/questions
  * @access  Private/Admin
  */
@@ -253,24 +336,75 @@ exports.createQuestion = asyncHandler(async (req, res) => {
         });
     }
 
-    // Create question in category-specific collection
-    const question = await createQuestion(req.body);
+    // Enhanced question data with new fields
+    const questionData = {
+        text: req.body.text,
+        category: req.body.category,
+        difficulty: req.body.difficulty || 'medium',
+        options: req.body.options,
+        correct: req.body.correct,
+        tags: req.body.tags || [],
+        explanation: req.body.explanation || '',
+        timeLimit: req.body.timeLimit || 60,
+        points: req.body.points || 1,
+        isActive: true,
+        createdBy: req.user?.id
+    };
 
-    res.status(201).json({
-        success: true,
-        data: question,
-        message: `Question added to ${category.toLowerCase()}_questions collection`
-    });
+    try {
+        // Try unified Question model first
+        const question = new Question(questionData);
+        await question.save();
+        
+        res.status(201).json(question);
+    } catch (err) {
+        // Fallback to category-specific collection
+        const question = await createQuestion(questionData);
+        
+        res.status(201).json({
+            success: true,
+            data: question,
+            message: `Question added to ${category.toLowerCase()}_questions collection`
+        });
+    }
 });
 
 /**
- * @desc    Update question (in category-specific collection)
+ * @desc    Update question with enhanced features
  * @route   PUT /api/admin/questions/:id
  * @access  Private/Admin
  */
 exports.updateQuestion = asyncHandler(async (req, res) => {
-    const { category } = req.body;
+    const updateData = {
+        text: req.body.text,
+        category: req.body.category,
+        difficulty: req.body.difficulty,
+        options: req.body.options,
+        correct: req.body.correct,
+        tags: req.body.tags || [],
+        explanation: req.body.explanation || '',
+        timeLimit: req.body.timeLimit || 60,
+        points: req.body.points || 1,
+        lastModifiedBy: req.user?.id
+    };
 
+    try {
+        // Try unified Question model first
+        const question = await Question.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (question) {
+            return res.json(question);
+        }
+    } catch (err) {
+        console.log('Unified model update failed, trying category collections');
+    }
+
+    // Fallback to category-specific collection
+    const { category } = req.body;
     if (!category) {
         return res.status(400).json({
             success: false,
@@ -278,12 +412,12 @@ exports.updateQuestion = asyncHandler(async (req, res) => {
         });
     }
 
-    const question = await updateQuestion(req.params.id, category, req.body);
+    const question = await updateQuestion(req.params.id, category, updateData);
 
     if (!question) {
         return res.status(404).json({
             success: false,
-            message: 'Question not found in ' + category.toLowerCase() + '_questions collection'
+            message: 'Question not found'
         });
     }
 
@@ -295,13 +429,44 @@ exports.updateQuestion = asyncHandler(async (req, res) => {
 });
 
 /**
- * @desc    Delete question (from category-specific collection)
+ * @desc    Delete question with soft delete support
  * @route   DELETE /api/admin/questions/:id
  * @access  Private/Admin
  */
 exports.deleteQuestion = asyncHandler(async (req, res) => {
-    const { category } = req.query;
+    const { category, permanent = false } = req.query;
 
+    try {
+        // Try unified Question model first
+        let question;
+        
+        if (permanent === 'true') {
+            // Hard delete
+            question = await Question.findByIdAndDelete(req.params.id);
+        } else {
+            // Soft delete
+            question = await Question.findByIdAndUpdate(
+                req.params.id,
+                { 
+                    isActive: false, 
+                    deletedAt: new Date(),
+                    lastModifiedBy: req.user?.id 
+                },
+                { new: true }
+            );
+        }
+
+        if (question) {
+            return res.json({
+                success: true,
+                message: permanent === 'true' ? 'Question permanently deleted' : 'Question deactivated'
+            });
+        }
+    } catch (err) {
+        console.log('Unified model delete failed, trying category collections');
+    }
+
+    // Fallback to category-specific collection
     if (!category) {
         return res.status(400).json({
             success: false,
@@ -314,7 +479,7 @@ exports.deleteQuestion = asyncHandler(async (req, res) => {
     if (!question) {
         return res.status(404).json({
             success: false,
-            message: 'Question not found in ' + category.toLowerCase() + '_questions collection'
+            message: 'Question not found'
         });
     }
 

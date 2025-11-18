@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../api/client';
+import QuestionManager from '../components/QuestionManager/QuestionManager';
 import './Admin.css';
 
 function Admin() {
@@ -499,81 +500,9 @@ function Admin() {
     </div>
   );
 
-  // Questions Tab
+  // Questions Tab - Now using enhanced QuestionManager
   const renderQuestions = () => (
-    <div className="questions-content">
-      <div className="section-header-with-button">
-        <h2 className="section-title">❓ Question Management</h2>
-        <div className="button-group">
-          <button
-            className="btn btn-import"
-            onClick={() => setShowBulkImportModal(true)}
-          >
-            📤 Bulk Import
-          </button>
-          <button
-            className="btn btn-add"
-            onClick={() => {
-              setSelectedQuestion(null);
-              setIsEditingQuestion(false);
-              setShowQuestionModal(true);
-            }}
-          >
-            ➕ Add Question
-          </button>
-        </div>
-      </div>
-
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Category</th>
-            <th>Difficulty</th>
-            <th>Options</th>
-            <th>Created</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questions.length === 0 ? (
-            <tr>
-              <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>
-                No questions found. Click "Add New Question" to create one.
-              </td>
-            </tr>
-          ) : (
-            questions.map((question) => (
-              <tr key={question._id}>
-                <td className="question-text">{question.text || question.question}</td>
-                <td><span className="badge badge-category">{question.category}</span></td>
-                <td><span className={`badge badge-${question.difficulty || 'medium'}`}>{question.difficulty || 'medium'}</span></td>
-                <td>{question.options?.length || 0} options</td>
-                <td>{new Date(question.createdAt).toLocaleDateString()}</td>
-                <td className="action-buttons">
-                  <button
-                    className="btn btn-edit"
-                    onClick={() => {
-                      setSelectedQuestion(question);
-                      setIsEditingQuestion(true);
-                      setShowQuestionModal(true);
-                    }}
-                  >
-                    ✏️ Edit
-                  </button>
-                  <button
-                    className="btn btn-delete"
-                    onClick={() => handleDeleteQuestion(question._id, question.category)}
-                  >
-                    🗑️ Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
+    <QuestionManager />
   );
 
   // Results Tab
