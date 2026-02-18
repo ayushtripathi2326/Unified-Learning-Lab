@@ -7,6 +7,10 @@
   padding: 2rem;
 }
 
+[data-theme="dark"] .login-page {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
 .login-card {
   background: white;
   padding: 3rem;
@@ -15,6 +19,11 @@
   width: 100%;
   max-width: 450px;
   animation: slideIn 0.5s ease;
+}
+
+[data-theme="dark"] .login-card {
+  background: var(--bg-secondary);
+  box-shadow: 0 20px 60px var(--shadow);
 }
 
 @keyframes slideIn {
@@ -33,6 +42,10 @@
   color: #333;
   text-align: center;
   font-size: 2rem;
+}
+
+[data-theme="dark"] .login-card h2 {
+  color: var(--text-primary);
 }
 
 .error-container {

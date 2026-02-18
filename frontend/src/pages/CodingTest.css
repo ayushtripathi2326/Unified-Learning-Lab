@@ -1,7 +1,7 @@
 /* Coding Test Styles */
 .coding-test {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg-primary);
   padding: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -10,10 +10,10 @@
 .test-setup {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 20px 40px var(--shadow);
 }
 
 .setup-header {
@@ -39,7 +39,7 @@
 .language-selection h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .languages-grid {
@@ -50,8 +50,8 @@
 }
 
 .language-card {
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
@@ -91,7 +91,7 @@
 .test-info h3 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .info-grid {
@@ -106,7 +106,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: #f8f9fa;
+  background: var(--bg-primary);
   border-radius: 8px;
 }
 
@@ -116,13 +116,13 @@
 
 .info-item strong {
   display: block;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .info-item p {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -130,10 +130,10 @@
 .test-header {
   max-width: 1000px;
   margin: 0 auto 2rem auto;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
 .test-info-bar {
@@ -148,7 +148,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .timer {
@@ -162,7 +162,7 @@
 
 .progress-bar {
   position: relative;
-  background: #e9ecef;
+  background: var(--border-color);
   height: 8px;
   border-radius: 4px;
   overflow: hidden;
@@ -179,17 +179,17 @@
   top: -25px;
   right: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 /* Test Content */
 .test-content {
   max-width: 1000px;
   margin: 0 auto;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
 .question-section {
@@ -210,7 +210,7 @@
 }
 
 .question-text {
-  background: #f8f9fa;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -222,7 +222,7 @@
   font-family: 'Courier New', monospace;
   white-space: pre-wrap;
   line-height: 1.6;
-  color: #333;
+  color: var(--text-primary);
 }
 
 /* Options */
@@ -237,7 +237,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -245,7 +245,7 @@
 
 .option-item:hover {
   border-color: #667eea;
-  background: #f8f9ff;
+  background: var(--bg-primary);
 }
 
 .option-item.selected {
@@ -278,7 +278,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--border-color);
 }
 
 .nav-buttons {
@@ -294,12 +294,13 @@
 .nav-dot {
   width: 40px;
   height: 40px;
-  border: 2px solid #e9ecef;
-  background: white;
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
   border-radius: 50%;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
+  color: var(--text-primary);
 }
 
 .nav-dot:hover {
@@ -376,10 +377,10 @@
 .test-results {
   max-width: 1000px;
   margin: 0 auto;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 20px 40px var(--shadow);
 }
 
 .results-header {
@@ -390,7 +391,7 @@
 .results-header h2 {
   font-size: 2.5rem;
   margin: 0 0 1rem 0;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .language-badge {

@@ -24,13 +24,13 @@
 
 .settings-modal {
   background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 8px 24px var(--shadow);
   animation: slideUp 0.3s ease-out;
 }
 
@@ -50,7 +50,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px;
-  border-bottom: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-color);
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 16px 16px 0 0;
 }
@@ -101,7 +101,7 @@
 .setting-input {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--border-color);
   background: var(--bg-secondary);
   color: var(--text-primary);
   border-radius: 8px;
@@ -127,7 +127,7 @@
 
 .toggle-visibility-btn {
   padding: 12px 16px;
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-secondary);
   color: var(--text-primary);
@@ -137,20 +137,20 @@
 }
 
 .toggle-visibility-btn:hover {
-  background: var(--bg-tertiary);
+  background: var(--bg-primary);
   transform: scale(1.05);
 }
 
 .help-text {
   display: block;
   margin-top: 6px;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
 .api-info {
   background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 24px;
@@ -218,9 +218,9 @@
 }
 
 .clear-btn {
-  background: var(--bg-tertiary);
+  background: var(--bg-primary);
   color: var(--text-secondary);
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--border-color);
 }
 
 .clear-btn:hover {

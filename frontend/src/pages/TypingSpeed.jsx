@@ -17,6 +17,7 @@ function TypingSpeed() {
   const [accuracy, setAccuracy] = useState(100);
   const [errors, setErrors] = useState(0);
   const [correctChars, setCorrectChars] = useState(0);
+  const [pressedKey, setPressedKey] = useState(null);
   const inputRef = useRef(null);
   const textDisplayRef = useRef(null);
   const currentCharRef = useRef(null);
@@ -44,6 +45,22 @@ function TypingSpeed() {
       "Full-stack developers must master both frontend frameworks and backend architectures simultaneously."
     ]
   };
+
+  // Keyboard press tracking for visual feedback
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      setPressedKey(e.key.toLowerCase());
+    };
+    const handleKeyUp = () => {
+      setPressedKey(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
 
   useEffect(() => {
     if (difficulty !== 'custom') {
@@ -268,16 +285,115 @@ function TypingSpeed() {
 
   const formatTime = () => {
     if (timerMode) {
-      // Show countdown timer in MM:SS format
       const minutes = Math.floor(timeRemaining / 60);
       const seconds = timeRemaining % 60;
       return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
-
     if (!startTime) return '0.00';
     const elapsed = ((endTime || Date.now()) - startTime) / 1000;
     return elapsed.toFixed(2);
   };
+
+  // Keyboard layout definition with finger assignments
+  // Finger groups: lp=left pinky, lr=left ring, lm=left middle, li=left index
+  //                ri=right index, rm=right middle, rr=right ring, rp=right pinky
+  //                thumb=thumbs
+  const keyboardRows = [
+    [
+      { label: '`', key: '`', finger: 'lp' },
+      { label: '1', key: '1', finger: 'lp' },
+      { label: '2', key: '2', finger: 'lr' },
+      { label: '3', key: '3', finger: 'lm' },
+      { label: '4', key: '4', finger: 'li' },
+      { label: '5', key: '5', finger: 'li' },
+      { label: '6', key: '6', finger: 'ri' },
+      { label: '7', key: '7', finger: 'ri' },
+      { label: '8', key: '8', finger: 'rm' },
+      { label: '9', key: '9', finger: 'rr' },
+      { label: '0', key: '0', finger: 'rp' },
+      { label: '-', key: '-', finger: 'rp' },
+      { label: '=', key: '=', finger: 'rp' },
+      { label: '⌫', key: 'backspace', finger: 'rp', wide: 'wide-2' },
+    ],
+    [
+      { label: 'Tab', key: 'tab', finger: 'lp', wide: 'wide-1-5' },
+      { label: 'Q', key: 'q', finger: 'lp' },
+      { label: 'W', key: 'w', finger: 'lr' },
+      { label: 'E', key: 'e', finger: 'lm' },
+      { label: 'R', key: 'r', finger: 'li' },
+      { label: 'T', key: 't', finger: 'li' },
+      { label: 'Y', key: 'y', finger: 'ri' },
+      { label: 'U', key: 'u', finger: 'ri' },
+      { label: 'I', key: 'i', finger: 'rm' },
+      { label: 'O', key: 'o', finger: 'rr' },
+      { label: 'P', key: 'p', finger: 'rp' },
+      { label: '[', key: '[', finger: 'rp' },
+      { label: ']', key: ']', finger: 'rp' },
+      { label: '\\', key: '\\', finger: 'rp' },
+    ],
+    [
+      { label: 'Caps', key: 'capslock', finger: 'lp', wide: 'wide-1-75' },
+      { label: 'A', key: 'a', finger: 'lp', home: true },
+      { label: 'S', key: 's', finger: 'lr', home: true },
+      { label: 'D', key: 'd', finger: 'lm', home: true },
+      { label: 'F', key: 'f', finger: 'li', home: true },
+      { label: 'G', key: 'g', finger: 'li' },
+      { label: 'H', key: 'h', finger: 'ri' },
+      { label: 'J', key: 'j', finger: 'ri', home: true },
+      { label: 'K', key: 'k', finger: 'rm', home: true },
+      { label: 'L', key: 'l', finger: 'rr', home: true },
+      { label: ';', key: ';', finger: 'rp', home: true },
+      { label: "'", key: "'", finger: 'rp' },
+      { label: 'Enter', key: 'enter', finger: 'rp', wide: 'wide-2-25' },
+    ],
+    [
+      { label: 'Shift', key: 'shift', finger: 'lp', wide: 'wide-2-5' },
+      { label: 'Z', key: 'z', finger: 'lp' },
+      { label: 'X', key: 'x', finger: 'lr' },
+      { label: 'C', key: 'c', finger: 'lm' },
+      { label: 'V', key: 'v', finger: 'li' },
+      { label: 'B', key: 'b', finger: 'li' },
+      { label: 'N', key: 'n', finger: 'ri' },
+      { label: 'M', key: 'm', finger: 'ri' },
+      { label: ',', key: ',', finger: 'rm' },
+      { label: '.', key: '.', finger: 'rr' },
+      { label: '/', key: '/', finger: 'rp' },
+      { label: 'Shift', key: 'shift', finger: 'rp', wide: 'wide-2-5' },
+    ],
+    [
+      { label: 'Ctrl', key: 'control', finger: 'lp', wide: 'wide-1-5' },
+      { label: 'Alt', key: 'alt', finger: 'lp', wide: 'wide-1-5' },
+      { label: 'Space', key: ' ', finger: 'thumb', wide: 'spacebar' },
+      { label: 'Alt', key: 'alt', finger: 'rp', wide: 'wide-1-5' },
+      { label: 'Ctrl', key: 'control', finger: 'rp', wide: 'wide-1-5' },
+    ],
+  ];
+
+  // Determine next character to type for key highlighting
+  const nextChar = isRunning && userInput.length < text.length
+    ? text[userInput.length]?.toLowerCase()
+    : null;
+
+  const getKeyClasses = (keyDef) => {
+    const classes = ['key', `finger-${keyDef.finger}`];
+    if (keyDef.wide) classes.push(keyDef.wide);
+    if (keyDef.home) classes.push('home-key');
+    if (pressedKey === keyDef.key) classes.push('pressed');
+    if (nextChar !== null && keyDef.key === nextChar) classes.push('next-key');
+    return classes.join(' ');
+  };
+
+  const fingerLegend = [
+    { cls: 'lp', label: 'Left Pinky' },
+    { cls: 'lr', label: 'Left Ring' },
+    { cls: 'lm', label: 'Left Middle' },
+    { cls: 'li', label: 'Left Index' },
+    { cls: 'ri', label: 'Right Index' },
+    { cls: 'rm', label: 'Right Middle' },
+    { cls: 'rr', label: 'Right Ring' },
+    { cls: 'rp', label: 'Right Pinky' },
+    { cls: 'thumb', label: 'Thumbs' },
+  ];
 
   return (
     <div className="typing-speed-page">
@@ -500,49 +616,31 @@ function TypingSpeed() {
       </div>
 
       <div className="keyboard-layout-section">
-        <h3>⌨️ Standard Keyboard Layout</h3>
+        <h3>⌨️ Interactive Keyboard Layout</h3>
+        <p className="keyboard-subtitle">Keys are color-coded by finger assignment • The next key to type glows during the test</p>
         <div className="keyboard-visual">
-          <div className="keyboard-row">
-            <span className="key">Q</span>
-            <span className="key">W</span>
-            <span className="key">E</span>
-            <span className="key">R</span>
-            <span className="key">T</span>
-            <span className="key">Y</span>
-            <span className="key">U</span>
-            <span className="key">I</span>
-            <span className="key">O</span>
-            <span className="key">P</span>
-          </div>
-          <div className="keyboard-row">
-            <span className="key home-key">A</span>
-            <span className="key home-key">S</span>
-            <span className="key home-key">D</span>
-            <span className="key home-key">F</span>
-            <span className="key">G</span>
-            <span className="key">H</span>
-            <span className="key home-key">J</span>
-            <span className="key home-key">K</span>
-            <span className="key home-key">L</span>
-            <span className="key">;</span>
-          </div>
-          <div className="keyboard-row">
-            <span className="key">Z</span>
-            <span className="key">X</span>
-            <span className="key">C</span>
-            <span className="key">V</span>
-            <span className="key">B</span>
-            <span className="key">N</span>
-            <span className="key">M</span>
-            <span className="key">,</span>
-            <span className="key">.</span>
-            <span className="key">/</span>
-          </div>
-          <div className="keyboard-row">
-            <span className="key spacebar">Space</span>
-          </div>
+          {keyboardRows.map((row, rowIndex) => (
+            <div className="keyboard-row" key={rowIndex}>
+              {row.map((keyDef, keyIndex) => (
+                <span
+                  key={`${rowIndex}-${keyIndex}`}
+                  className={getKeyClasses(keyDef)}
+                >
+                  {keyDef.label}
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
-        <p className="keyboard-note">🏠 Highlighted keys represent the home row position</p>
+        <div className="finger-legend">
+          {fingerLegend.map((f) => (
+            <div className="legend-item" key={f.cls}>
+              <span className={`legend-swatch finger-${f.cls}`}></span>
+              <span className="legend-label">{f.label}</span>
+            </div>
+          ))}
+        </div>
+        <p className="keyboard-note">🏠 Bumped keys (F & J) mark the home row position</p>
       </div>
     </div>
   );
