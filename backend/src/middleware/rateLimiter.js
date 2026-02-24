@@ -5,14 +5,13 @@ const rateLimit = require('express-rate-limit');
  */
 exports.apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Reduced for free tier memory
+    max: 100,
     message: {
         success: false,
         message: 'Too many requests from this IP, please try again later.',
     },
     standardHeaders: true,
     legacyHeaders: false,
-    skip: (req, res) => res.statusCode < 400 // Skip successful requests to save memory
 });
 
 /**

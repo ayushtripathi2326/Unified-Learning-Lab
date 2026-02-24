@@ -19,42 +19,46 @@ const app = express();
 // Ensure Express respects the real client IP when behind proxies/load balancers
 app.set('trust proxy', 1);
 
-// Security middleware
-app.use(helmet());
-
-// CORS
+// Parse allowed CORS origins from environment
 const allowedOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean);
 console.log('Allowed CORS origins:', allowedOrigins);
 
-// CORS - Allow all origins in production for now
+// Security middleware with enhanced headers
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'", ...allowedOrigins],
+        },
+    },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+}));
+
+// CORS — restrict to configured origins only
 app.use(
     cors({
-        origin: true,
+        origin: function (origin, callback) {
+            // Allow requests with no origin (mobile apps, curl, health checks)
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+            return callback(new Error(`Origin ${origin} not allowed by CORS`));
+        },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cache-Control']
     })
 );
 
-// Additional CORS headers for preflight
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (origin) {
-        res.header('Access-Control-Allow-Origin', origin);
-        res.header('Access-Control-Allow-Credentials', 'true');
-    }
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control');
-    if (req.method === 'OPTIONS') {
-        res.sendStatus(200);
-    } else {
-        next();
-    }
-});
-
-// Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Body parser with size limits to prevent DoS
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Cookie parser
 app.use(cookieParser());

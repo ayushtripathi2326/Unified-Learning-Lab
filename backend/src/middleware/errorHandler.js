@@ -5,8 +5,12 @@ const errorHandler = (err, req, res, next) => {
     let error = { ...err };
     error.message = err.message;
 
-    // Log to console for dev
-    console.error(err);
+    // Log full error in development, minimal in production
+    if (process.env.NODE_ENV === 'development') {
+        console.error(err);
+    } else {
+        console.error(`${err.name}: ${err.message}`);
+    }
 
     // Mongoose bad ObjectId
     if (err.name === 'CastError') {
@@ -28,7 +32,9 @@ const errorHandler = (err, req, res, next) => {
 
     res.status(error.statusCode || 500).json({
         success: false,
-        error: error.message || 'Server Error',
+        error: process.env.NODE_ENV === 'development'
+            ? error.message || 'Server Error'
+            : error.statusCode === 500 ? 'Internal Server Error' : (error.message || 'Server Error'),
     });
 };
 
