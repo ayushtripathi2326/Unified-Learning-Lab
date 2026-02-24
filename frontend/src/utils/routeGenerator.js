@@ -17,13 +17,14 @@ const pageComponents = {
   Chatbot: lazy(() => import('../pages/Chatbot')),
   TypingSpeed: lazy(() => import('../pages/TypingSpeed')),
   ForgotPassword: lazy(() => import('../pages/ForgotPassword')),
-  ResetPassword: lazy(() => import('../pages/ResetPassword'))
+  ResetPassword: lazy(() => import('../pages/ResetPassword')),
+  CodingTest: lazy(() => import('../pages/CodingTest'))
 };
 
 export const generateRoutes = (routesConfig, user, setUser) => {
   return routesConfig.map((route) => {
     const Component = pageComponents[route.component];
-    
+
     if (!Component) {
       console.warn(`Component ${route.component} not found`);
       return null;

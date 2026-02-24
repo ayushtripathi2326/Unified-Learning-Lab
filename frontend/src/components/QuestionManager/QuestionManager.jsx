@@ -51,7 +51,8 @@ const QuestionManager = () => {
 
       const response = await apiClient.get(`${API_BASE}/questions?${params}`);
       // apiClient already unwraps response.data, so response IS the data
-      const questionsData = Array.isArray(response) ? response : (response?.data || response || []);
+      const raw = Array.isArray(response) ? response : (response?.questions || response?.data || []);
+      const questionsData = Array.isArray(raw) ? raw : [];
       setQuestions(questionsData);
       setFilteredQuestions(questionsData);
       calculateStats(questionsData);
@@ -66,6 +67,7 @@ const QuestionManager = () => {
 
   // Calculate statistics
   const calculateStats = (questionsData) => {
+    if (!Array.isArray(questionsData)) return;
     const byCategory = {};
     const byDifficulty = {};
     const now = new Date();
@@ -199,9 +201,9 @@ const QuestionManager = () => {
 
       return {
         success: true,
-        imported: response.data.imported,
-        failed: response.data.failed,
-        errors: response.data.errors
+        imported: response.imported ?? response.data?.imported,
+        failed: response.failed ?? response.data?.failed,
+        errors: response.errors ?? response.data?.errors
       };
     } catch (err) {
       return {
