@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const { CORS_ORIGIN, NODE_ENV } = require('./config/env');
+const { CORS_ORIGIN, NODE_ENV, FRONTEND_URL } = require('./config/env');
 const errorHandler = require('./middleware/errorHandler');
 const { apiLimiter } = require('./middleware/rateLimiter');
 
@@ -19,8 +19,18 @@ const app = express();
 // Ensure Express respects the real client IP when behind proxies/load balancers
 app.set('trust proxy', 1);
 
-// Parse allowed CORS origins from environment
-const allowedOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean);
+// Parse allowed CORS origins from environment + always include production URLs
+const envOrigins = (CORS_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean);
+const productionOrigins = [
+    'https://unified-learning-lab.onrender.com',
+    'https://unified-learning-lab-backend.onrender.com',
+];
+// Include FRONTEND_URL if set
+if (FRONTEND_URL && !envOrigins.includes(FRONTEND_URL)) {
+    envOrigins.push(FRONTEND_URL);
+}
+// Merge and deduplicate
+const allowedOrigins = [...new Set([...envOrigins, ...productionOrigins])];
 console.log('Allowed CORS origins:', allowedOrigins);
 
 // Security middleware with enhanced headers
