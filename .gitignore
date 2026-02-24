@@ -38,3 +38,6 @@ backend/scripts/adminManager.js
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Project Context
+Information.txt

@@ -37,11 +37,12 @@ function Admin() {
   const fetchStats = async () => {
     try {
       setLoading(true);
-  const response = await apiClient.get(`${API_BASE}/stats`);
-  setStats(response.data);
+      const response = await apiClient.get(`${API_BASE}/stats`);
+      // apiClient already unwraps response.data, so response IS the payload
+      setStats(response.data || response);
       setError('');
     } catch (err) {
-  setError(getErrorMessage(err, 'Failed to fetch statistics'));
+      setError(getErrorMessage(err, 'Failed to fetch statistics'));
     } finally {
       setLoading(false);
     }
@@ -51,13 +52,14 @@ function Admin() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-  const response = await apiClient.get(`${API_BASE}/users`);
-  console.log('Users response:', response);
-  setUsers(response.data);
+      const response = await apiClient.get(`${API_BASE}/users`);
+      console.log('Users response:', response);
+      // apiClient already unwraps response.data
+      setUsers(Array.isArray(response) ? response : (response?.data || []));
       setError('');
     } catch (err) {
-  console.error('Error fetching users:', err);
-  setError(getErrorMessage(err, 'Failed to fetch users'));
+      console.error('Error fetching users:', err);
+      setError(getErrorMessage(err, 'Failed to fetch users'));
     } finally {
       setLoading(false);
     }
@@ -67,11 +69,12 @@ function Admin() {
   const fetchQuestions = async () => {
     try {
       setLoading(true);
-  const response = await apiClient.get(`${API_BASE}/questions`);
-  setQuestions(response.data);
+      const response = await apiClient.get(`${API_BASE}/questions`);
+      // apiClient already unwraps response.data
+      setQuestions(Array.isArray(response) ? response : (response?.data || []));
       setError('');
     } catch (err) {
-  setError(getErrorMessage(err, 'Failed to fetch questions'));
+      setError(getErrorMessage(err, 'Failed to fetch questions'));
     } finally {
       setLoading(false);
     }
@@ -81,11 +84,12 @@ function Admin() {
   const fetchResults = async () => {
     try {
       setLoading(true);
-  const response = await apiClient.get(`${API_BASE}/results`);
-  setResults(response.data);
+      const response = await apiClient.get(`${API_BASE}/results`);
+      // apiClient already unwraps response.data
+      setResults(Array.isArray(response) ? response : (response?.data || []));
       setError('');
     } catch (err) {
-  setError(getErrorMessage(err, 'Failed to fetch results'));
+      setError(getErrorMessage(err, 'Failed to fetch results'));
     } finally {
       setLoading(false);
     }
@@ -94,12 +98,12 @@ function Admin() {
   // Update user
   const handleUpdateUser = async (userId, updates) => {
     try {
-  await apiClient.put(`${API_BASE}/users/${userId}`, updates);
+      await apiClient.put(`${API_BASE}/users/${userId}`, updates);
       alert('User updated successfully');
       fetchUsers();
       setShowUserModal(false);
     } catch (err) {
-  alert(getErrorMessage(err, 'Failed to update user'));
+      alert(getErrorMessage(err, 'Failed to update user'));
     }
   };
 
@@ -108,11 +112,11 @@ function Admin() {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
 
     try {
-  await apiClient.delete(`${API_BASE}/users/${userId}`);
+      await apiClient.delete(`${API_BASE}/users/${userId}`);
       alert('User deleted successfully');
       fetchUsers();
     } catch (err) {
-  alert(getErrorMessage(err, 'Failed to delete user'));
+      alert(getErrorMessage(err, 'Failed to delete user'));
     }
   };
 
@@ -122,7 +126,7 @@ function Admin() {
     if (!window.confirm('Are you sure you want to delete this question?')) return;
 
     try {
-  await apiClient.delete(`${API_BASE}/questions/${questionId}?category=${category}`);
+      await apiClient.delete(`${API_BASE}/questions/${questionId}?category=${category}`);
       alert(`Question deleted successfully from ${category.toLowerCase()}_questions collection`);
       fetchQuestions();
     } catch (err) {
@@ -133,7 +137,7 @@ function Admin() {
   // Create question
   const handleCreateQuestion = async (questionData) => {
     try {
-  await apiClient.post(`${API_BASE}/questions`, questionData);
+      await apiClient.post(`${API_BASE}/questions`, questionData);
       alert('Question created successfully');
       fetchQuestions();
       setShowQuestionModal(false);
@@ -146,7 +150,7 @@ function Admin() {
   // Update question
   const handleUpdateQuestion = async (questionId, questionData) => {
     try {
-  await apiClient.put(`${API_BASE}/questions/${questionId}`, questionData);
+      await apiClient.put(`${API_BASE}/questions/${questionId}`, questionData);
       alert('Question updated successfully');
       fetchQuestions();
       setShowQuestionModal(false);
@@ -323,7 +327,7 @@ function Admin() {
       } catch (e) {
         console.log('Backend wakeup attempt...');
       }
-      
+
       // Wait 2 seconds for backend to wake up
       setTimeout(() => {
         if (activeTab === 'dashboard') {
@@ -812,7 +816,7 @@ function Admin() {
                   </p>
                   <div className="ai-prompt-box">
                     <pre className="code-block ai-prompt">
-{`Generate 25 questions for [CATEGORY] in this exact JSON format:
+                      {`Generate 25 questions for [CATEGORY] in this exact JSON format:
 
 [
   {
@@ -877,7 +881,7 @@ Important: "correct" is the index (0-3) of the right answer`}
                 <div className="format-section">
                   <h4>📄 JSON Format:</h4>
                   <pre className="code-block">
-{`[
+                    {`[
   {
     "text": "Question text here?",
     "category": "Aptitude",
@@ -895,7 +899,7 @@ Important: "correct" is the index (0-3) of the right answer`}
                 <div className="format-section">
                   <h4>📊 CSV Format:</h4>
                   <pre className="code-block">
-{`text,category,difficulty,option1,option2,option3,option4,correct
+                    {`text,category,difficulty,option1,option2,option3,option4,correct
 "Question?",Aptitude,easy,Opt1,Opt2,Opt3,Opt4,2`}
                   </pre>
                   <button className="btn btn-download" onClick={downloadSampleCSV}>

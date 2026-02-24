@@ -13,13 +13,13 @@ const QuestionManager = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   // Modal states
   const [showQuestionForm, setShowQuestionForm] = useState(false);
   const [showBulkImport, setShowBulkImport] = useState(false);
   const [showCategoryManager, setShowCategoryManager] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  
+
   // Filter states
   const [filters, setFilters] = useState({
     category: '',
@@ -44,15 +44,17 @@ const QuestionManager = () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
-      
+
       Object.entries(filters).forEach(([key, value]) => {
         if (value) params.append(key, value);
       });
 
       const response = await apiClient.get(`${API_BASE}/questions?${params}`);
-      setQuestions(response.data);
-      setFilteredQuestions(response.data);
-      calculateStats(response.data);
+      // apiClient already unwraps response.data, so response IS the data
+      const questionsData = Array.isArray(response) ? response : (response?.data || response || []);
+      setQuestions(questionsData);
+      setFilteredQuestions(questionsData);
+      calculateStats(questionsData);
       setError('');
     } catch (err) {
       setError('Failed to fetch questions');
@@ -73,7 +75,7 @@ const QuestionManager = () => {
     questionsData.forEach(q => {
       byCategory[q.category] = (byCategory[q.category] || 0) + 1;
       byDifficulty[q.difficulty] = (byDifficulty[q.difficulty] || 0) + 1;
-      
+
       if (new Date(q.createdAt) > weekAgo) {
         recentlyAdded++;
       }
@@ -101,7 +103,7 @@ const QuestionManager = () => {
 
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
-      filtered = filtered.filter(q => 
+      filtered = filtered.filter(q =>
         q.text.toLowerCase().includes(searchTerm) ||
         q.options.some(opt => opt.toLowerCase().includes(searchTerm))
       );
@@ -110,7 +112,7 @@ const QuestionManager = () => {
     if (filters.dateRange) {
       const now = new Date();
       let cutoffDate;
-      
+
       switch (filters.dateRange) {
         case 'today':
           cutoffDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -124,7 +126,7 @@ const QuestionManager = () => {
         default:
           cutoffDate = null;
       }
-      
+
       if (cutoffDate) {
         filtered = filtered.filter(q => new Date(q.createdAt) >= cutoffDate);
       }
@@ -133,12 +135,12 @@ const QuestionManager = () => {
     filtered.sort((a, b) => {
       let aVal = a[filters.sortBy];
       let bVal = b[filters.sortBy];
-      
+
       if (filters.sortBy === 'createdAt') {
         aVal = new Date(aVal);
         bVal = new Date(bVal);
       }
-      
+
       if (filters.sortOrder === 'asc') {
         return aVal > bVal ? 1 : -1;
       } else {
@@ -176,7 +178,7 @@ const QuestionManager = () => {
 
   const handleDeleteQuestion = async (questionId, category) => {
     if (!window.confirm('Are you sure you want to delete this question?')) return;
-    
+
     try {
       await apiClient.delete(`${API_BASE}/questions/${questionId}?category=${category}`);
       fetchQuestions();
@@ -191,10 +193,10 @@ const QuestionManager = () => {
       const response = await apiClient.post(`${API_BASE}/questions/bulk-import`, {
         questions: questionsData
       });
-      
+
       setShowBulkImport(false);
       fetchQuestions();
-      
+
       return {
         success: true,
         imported: response.data.imported,
@@ -224,7 +226,7 @@ const QuestionManager = () => {
           <h2>❓ Advanced Question Management</h2>
           <p>Manage questions across all categories with powerful filtering and bulk operations</p>
         </div>
-        
+
         <div className="header-actions">
           <button
             className="btn btn-secondary"
@@ -258,7 +260,7 @@ const QuestionManager = () => {
             <p>Total Questions</p>
           </div>
         </div>
-        
+
         <div className="stat-card">
           <div className="stat-icon">🆕</div>
           <div className="stat-content">
@@ -266,7 +268,7 @@ const QuestionManager = () => {
             <p>Added This Week</p>
           </div>
         </div>
-        
+
         <div className="stat-card">
           <div className="stat-icon">🏷️</div>
           <div className="stat-content">
@@ -274,7 +276,7 @@ const QuestionManager = () => {
             <p>Categories</p>
           </div>
         </div>
-        
+
         <div className="stat-card">
           <div className="stat-icon">🎯</div>
           <div className="stat-content">
